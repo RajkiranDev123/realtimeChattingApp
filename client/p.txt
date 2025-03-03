@@ -1,0 +1,7 @@
+npm create vite@latest
+y
+.
+react
+js
+npm install
+npm run dev
