@@ -5,3 +5,7 @@ react
 js
 npm install
 npm run dev
+
+npm i react-router-dom
+npm i axios
+npm i react-hot-toast
