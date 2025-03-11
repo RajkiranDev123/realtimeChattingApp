@@ -1,0 +1,44 @@
+.app-header{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 10px 30px;
+    justify-content: space-between;
+    border-bottom: #bbb 1px solid;
+  }
+  
+  .app-logo{
+    display: flex;
+    flex-wrap: nowrap;
+    color: #0b0bb4;
+    font-size: 25px;
+    font-weight: bold;
+  }
+  
+  i{
+    margin: 5px 10px;
+  }
+  
+  .app-user-profile{
+    display: flex;
+  }
+  
+  .logged-user-name{
+    color: #030369;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-right: 20px;
+  }
+  
+  .logged-user-profile-pic{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #2ba410;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 40px;
+  }

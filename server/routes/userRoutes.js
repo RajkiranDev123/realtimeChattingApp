@@ -5,17 +5,7 @@ import { auth } from "../middlewares/authMiddlewares.js";
 
 const router = new express.Router()
 
-
 router.get("/get-logged-user", auth, getLoggedUser)
 router.get("/get-all-users", auth, getAllUsers)
-
-
-
-
-
-
-
-
-
 
 export default router

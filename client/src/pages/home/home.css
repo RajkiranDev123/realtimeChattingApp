@@ -1,0 +1,15 @@
+.home-page{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .main-content{
+    display: flex;
+    /* border: 1px solid red; */
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px 10px;
+    flex:1;
+  }

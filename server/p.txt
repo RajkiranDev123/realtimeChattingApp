@@ -1,4 +1,4 @@
-npm init -y
+npm init -y (initialize)
 npm i express
 npm install --save-dev nodemon
 npm i dotenv
@@ -14,7 +14,6 @@ git push -u origin main
 
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js", //npm run dev
     "start": "node server.js"   // node server.js
   },

@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength:3
+        minlength: 3
     },
     profilePic: {
         type: String,
@@ -24,5 +24,8 @@ const userSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
+///////////////////////////////// name of collection
 const UserModel = mongoose.model("user", userSchema)
 export default UserModel
+
+//const userSchema = new mongoose.Schema({}) ,const UserModel = mongoose.model("user", userSchema)

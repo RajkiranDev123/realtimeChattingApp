@@ -1,18 +1,68 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getLoggedUser, getAllUsers } from "../apiCalls/user.js"
+import { getAllChats } from "../apiCalls/chat.js"
 
-function ProtectedRoute({children}){
-    const navigate=useNavigate()
-    useEffect(()=>{
-        if(localStorage.getItem("token")){
-
-        }else{
+import { useDispatch } from "react-redux";
+import { setUser, setAllUsers,setAllChats } from "../redux/userSlice.js";
+function ProtectedRoute({ children }) {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    
+    const getLoggedUserDB = async (e) => {
+        let response = null
+        try {
+            response = await getLoggedUser()
+            if (response.success) {
+                dispatch(setUser(response?.data))
+            } else {
+                navigate("/login")
+            }
+        } catch (error) {
             navigate("/login")
         }
-    })
+    }
+
+    const getAllUsersFromDB = async (e) => {
+        let response = null
+        try {
+            response = await getAllUsers()
+            if (response.success) {
+                dispatch(setAllUsers(response?.data))
+            } else {
+                navigate("/login")
+            }
+        } catch (error) {
+            navigate("/login")
+        }
+    }
+
+    const getAllChatsFromDB = async (e) => {
+        let response = null
+        try {
+            response = await getAllChats()
+            if (response.success) {
+                dispatch(setAllChats(response?.data))
+            } else {
+                navigate("/login")
+            }
+        } catch (error) {
+            navigate("/login")
+        }
+    }
+
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            getLoggedUserDB()
+            getAllUsersFromDB()
+            getAllChatsFromDB()
+        } else {
+            navigate("/login")
+        }
+    }, [])
     // useEffect without a dependency array runs every render 
 
-    return(
+    return (
         <div>
             {children}
         </div>

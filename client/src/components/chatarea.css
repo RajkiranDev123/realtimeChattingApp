@@ -1,0 +1,88 @@
+/*******************************************************
+*************CSS STYLES FOR CHAT AREA**************
+********************************************************/
+
+.app-chat-area{
+    background-color: white;
+    width: 70%;
+    padding: 20px 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+    overflow-y: scroll;
+  }
+  
+  /*******************************************************
+  *************CSS STYLES FOR CHAT AREA HEADER************
+  ********************************************************/
+  .app-chat-area-header{
+      padding: 10px 30px;
+      margin-bottom: 20px;
+      border-bottom: #bbb 1px solid;
+      text-align: right;
+      font-weight: bold;
+      color: #e74c3c;
+  }
+
+  /*******************************************************
+********CSS STYLES FOR CHAT AREA & CHAT INPUT***********
+********************************************************/
+.main-chat-area{
+    flex: 1
+}
+
+.send-message-div{
+    position: relative;
+} 
+
+ .send-message-input{
+    width: 100%;
+    height: 40px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #28282B;
+    border: #ddd 1px solid;
+}
+
+.send-message-btn{
+    position: absolute;
+    right: 10px;
+    font-size: 25px;
+    color: #e74c3c;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin-top: 5px;
+} 
+
+/*  */
+.message-container{
+    display: flex;
+}
+.send-message, .received-message{
+    padding: 10px 20px;
+    margin-top: 5px;
+    border-radius: 10px;
+    font-size: 14px;
+    width: fit-content;
+}
+
+.send-message{ 
+    background-color: #e74c3c;
+    color: white;
+    margin-left: 100px;
+    border-top-right-radius: 0px;
+}
+
+.received-message{ 
+    background-color: #ddd;
+    color: #28282B;
+    margin-right: 100px;
+    border-top-left-radius: 0px;
+}
+.message-timestamp{
+    width: fit-content;
+    font-size: 13px;
+}

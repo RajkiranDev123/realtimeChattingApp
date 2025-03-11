@@ -5,11 +5,17 @@ import MessageModel from "../models/message.js"
 /////////////////////////////////////////// send message ////////////////////////////
 export const newMessage = async (req, res) => {
     try {
+        //chatId,sender,text,read
         const newMessage = await MessageModel(req.body)
         const savedMessage = await newMessage.save()
 
+        //members,lastMessage,unreadMessageCount
         const currentChat = await ChatModel.findOneAndUpdate(
-            { _id: req.body.chatId }, { lastMessage: savedMessage._id, $inc: { unreadMessageCount: 1 } }
+            { _id: req.body.chatId },
+            {
+                lastMessage: savedMessage._id,
+                $inc: { unreadMessageCount: 1 }
+            }
         )
         return res.status(201).json({
             message: "Message sent successfully!",
@@ -27,10 +33,11 @@ export const newMessage = async (req, res) => {
 /////////////////////////////////////////// get all messages ////////////////////////////
 export const getAllMessages = async (req, res) => {
     try {
-        const allMessages = await MessageModel.find({chatId:req.params.chatId}).sort({createdAt:1})
-     
+        //chatId,sender,text,read
+        const allMessages = await MessageModel.find({ chatId: req.params.chatId }).sort({ createdAt: 1 })
+
         return res.status(201).json({
-            message: "Messages fetched successfully!",
+            message: "All Messages fetched successfully!",
             success: true,
             data: allMessages
         })

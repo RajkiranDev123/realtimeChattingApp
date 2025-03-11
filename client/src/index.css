@@ -7,10 +7,7 @@
   font-family: "Poppins", sans-serif;
 }
 
-
-/*******************************************************
-*************CSS STYLES FOR LOGIN & SIGNUP**************
-********************************************************/
+/*************CSS STYLES FOR LOGIN & SIGNUP**************/
 .container-back-img{
   background-image: url('./bg.jpg');
   background-repeat: no-repeat;
@@ -19,7 +16,7 @@
   height: 100%;
   position: absolute;
   z-index: -2;
-  object-fit: contain;
+  object-fit: cover;
 }
 .container-back-color{
   background-color: #483e3d;
@@ -35,15 +32,16 @@
   align-items: center;
   display: flex;
   justify-content: center;
+  /* border:1px solid red */
 }
 
 .card {
-  border-radius: 10px;
+  border-radius: 3px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
-  width: 400px;
-  padding: 20px 0px;
+  width: 500px;
+
   background-color: #cbcacf;
-  padding: 10px 30px;
+  padding: 50px 30px;
 }
 .column{
   display: flex;
@@ -61,7 +59,7 @@
 }
 
 .card_title h1 {
-  font-size: 26px;
+  font-size: 15px;
   font-weight: bold;
   color: #e74c3c;
 }
@@ -73,7 +71,7 @@
   border: none;
   outline: none;
   padding: 12px 20px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 .form button {
@@ -86,25 +84,29 @@
   padding: 8px 15px;
   width: 100%;
   margin-top: 10px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .card_terms {
   display: flex;
   align-items: center;
   padding: 10px;
+  color: blue;
 }
 
-.card_terms input[type="checkbox"] {
+/* .card_terms input[type="checkbox"] {
   background-color: #e2e2e2;
-}
+} */
 
 .card_terms span {
   margin: 5px;
   font-size: 13px;
+  font-weight: bold;
 }
 
 .card a {
-  color: #4796ff;
+  color: #b91a3f;
   text-decoration: none;
   margin-left: 5px;
 }

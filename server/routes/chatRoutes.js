@@ -10,12 +10,4 @@ router.post("/create-new-chat",auth,createNewChat)
 router.get("/get-all-chats",auth,getAllChats)
 
 
-
-
-
-
-
-
-
-
 export default router
