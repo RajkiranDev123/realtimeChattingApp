@@ -10,6 +10,7 @@ export const newMessage = async (req, res) => {
         const savedMessage = await newMessage.save()
 
         //members,lastMessage,unreadMessageCount
+        //update chat too!
         const currentChat = await ChatModel.findOneAndUpdate(
             { _id: req.body.chatId },
             {
@@ -36,7 +37,7 @@ export const getAllMessages = async (req, res) => {
         //chatId,sender,text,read
         const allMessages = await MessageModel.find({ chatId: req.params.chatId }).sort({ createdAt: 1 })
 
-        return res.status(201).json({
+        return res.status(200).json({
             message: "All Messages fetched successfully!",
             success: true,
             data: allMessages

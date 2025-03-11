@@ -17,10 +17,10 @@ export const createNewChat = async (req, res) => {
 //////////////////////////////////////////////// get all chats ///////////////////////////////////////////////
 export const getAllChats = async (req, res) => {
     try {
-        console.log(req.body.userId)
+        // console.log(req.body.userId)
         const allChats = await ChatModel.find({ members: { $in: req.body.userId } }).populate("members")
         
-        // replacing a path/references like ObjectID in document with actual documents from other collections
+        // replacing a path/references like ObjectID in document with actual documents from other collections white returning result
 
         return res.status(200).json({ message: "All Chats fetched Successfully!", success: true, data: allChats })
 
