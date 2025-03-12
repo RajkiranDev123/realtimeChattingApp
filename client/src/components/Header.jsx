@@ -1,6 +1,6 @@
 import React from 'react'
 import "./header.css"
-import { useDispatch, useSelector } from 'react-redux'
+import {  useSelector } from 'react-redux'
 const Header = () => {
   const { user } = useSelector(state => state.userReducer)
   // console.log(user)

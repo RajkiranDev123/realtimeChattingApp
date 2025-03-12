@@ -15,6 +15,9 @@
     width: 60%;
     color: white;
   }
+  .user-search-filter{
+    margin-bottom: 2px;
+  }
   .user-display-name{
     padding: 1px 20px;
     font-size: 16px;

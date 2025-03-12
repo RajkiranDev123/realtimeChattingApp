@@ -11,5 +11,5 @@ npm i axios
 npm i react-hot-toast
 npm i react-redux @reduxjs/toolkit 
 npm i react-copy-to-clipboard --force
-npm i moment
+npm i moment --force
 

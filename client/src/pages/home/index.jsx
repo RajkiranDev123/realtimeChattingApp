@@ -7,16 +7,17 @@ import { useSelector } from 'react-redux'
 
 ////////////////// home /////////////////////////////////////////////////
 const index = () => {
-  const {selectedChat}=useSelector(state=>state.userReducer)
+  const { selectedChat } = useSelector(state => state.userReducer)
   return (
     <div className="home-page">
-      <Header />
 
+      <Header />
+      
       <div className="main-content">
         <Sidebar />
-       {selectedChat&& <ChatArea/>}
+        {selectedChat && <ChatArea />}
       </div>
-      
+
     </div>
   )
 }

@@ -16,7 +16,7 @@
   height: 100%;
   position: absolute;
   z-index: -2;
-  object-fit: cover;
+  object-fit: contain;
 }
 .container-back-color{
   background-color: #483e3d;
@@ -41,7 +41,7 @@
   width: 500px;
 
   background-color: #cbcacf;
-  padding: 50px 30px;
+  padding: 50px 35px;
 }
 .column{
   display: flex;
