@@ -79,7 +79,7 @@ const UserList = ({ searchKey }) => {
                             <div className="user-display-name">  {user?.firstName}</div>
                             <div className="user-display-email">{user?.email}</div>
                         </div>
-                        {/* start chat button */}
+                        {/* start chat button , allChats : members:[logged user id,] */}
                         {!allChats.find(chat => chat?.members.map(m => m?._id).includes(user?._id)) && <div className="user-start-chat">
                             <button onClick={() => createChat(user._id)}
                                 className="user-start-chat-btn">Start Chat</button>
