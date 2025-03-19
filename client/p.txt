@@ -13,3 +13,5 @@ npm i react-redux @reduxjs/toolkit
 npm i react-copy-to-clipboard --force
 npm i moment --force
 
+ npm i socket.io-client --force
+

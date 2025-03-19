@@ -15,7 +15,7 @@ export const signup = async (req, res) => {
         }
         const hashedpassword = await bcrypt.hash(req.body.password, 10)
         req.body.password = hashedpassword
-        const newUser = new UserModel(req.body) //create an object after validating..
+        const newUser = new UserModel(req.body) //create an object 
         await newUser.save()
         return res.status(201).json({ message: "User Created Successfully!", success: true })
 

@@ -5,12 +5,12 @@ import MessageModel from "../models/message.js"
 /////////////////////////////////////////// send message ////////////////////////////
 export const newMessage = async (req, res) => {
     try {
-        //chatId,sender,text,read
+        //chatId,sender,text,read:false
         const newMessage = await MessageModel(req.body)
         const savedMessage = await newMessage.save()
 
         //members,lastMessage,unreadMessageCount
-        //update chat too!
+        //update chat too! : lastMessage and unreadMessageCount
         const currentChat = await ChatModel.findOneAndUpdate(
             { _id: req.body.chatId },
             {

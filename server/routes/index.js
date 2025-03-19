@@ -9,7 +9,7 @@ import messageRouter from "./messageRoutes.js"
 const router=Router()
 // const router=new express.Router()
 
-// url/api/v1/ : auth,user,chat,message
+// backend_url/api/v1/ : auth,user,chat,message
 
 router.use("/auth",authRouter)
 router.use("/user",userRouter)

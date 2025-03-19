@@ -1,12 +1,8 @@
 import mongoose from "mongoose";
 
 const chatSchema = new mongoose.Schema({
-
     members: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "user"
-        }]
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }]
     },
     // only members is needed to start chat
     lastMessage: {

@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { createNewMessage, getAllMessages } from '../apiCalls/message'
+import { clearUnreadMessageCountAndMessageReadTrue } from '../apiCalls/chat'
+
 import "./chatarea.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { showLoader, hideLoader } from '../redux/loaderSlice'
 import { toast } from "react-hot-toast"
+import { formatName } from "../utils/formatName.js"
 
+import moment from "moment"
 import { formatTime } from '../utils/formatTime'
-const ChatArea = () => {
+const ChatArea = ({ socket }) => {
   const dispatch = useDispatch()
-  const { selectedChat, user } = useSelector(state => state.userReducer)
+  const { selectedChat, user, allChats } = useSelector(state => state.userReducer)
   const selectedUser = selectedChat?.members.find(u => u?._id !== user?._id)
   const [message, setNewMessage] = useState("")
   const [allMessages, setAllMessages] = useState([])
@@ -22,17 +26,27 @@ const ChatArea = () => {
         text: message
       }
       if (message == "") { return }
-      dispatch(showLoader())
+
+
+      socket.emit("send-message", {
+        ...newMessage,
+        members: selectedChat.members.map(m => m._id),
+        read: false,
+        createdAt: moment().format("DD-MM-YY hh:mm:ss")
+
+      })
+
+      // dispatch(showLoader())
       response = await createNewMessage(newMessage)
-      dispatch(hideLoader())
+      // dispatch(hideLoader())
 
       if (response.success) {
         toast.success(response.message)
         setNewMessage("")
-        // dispatch(setUser(response?.data))
+
       }
     } catch (error) {
-      dispatch(hideLoader())
+      // dispatch(hideLoader())
       toast.error(error.message)
     }
   }
@@ -53,8 +67,40 @@ const ChatArea = () => {
     }
   }
 
+  // clearUnreadMessageCountAndMessageReadTrue
+
+  const clearUnreadCountAndTrue = async (e) => {
+    let response = null
+    try {
+      dispatch(showLoader())
+      response = await clearUnreadMessageCountAndMessageReadTrue(selectedChat?._id)
+      dispatch(hideLoader())
+      if (response?.success) {
+        // allChats.map(chat => {
+        //   if (chat?._id === selectedChat?._id) {
+        //     return response.data
+        //   }
+        //   return chat
+        // }
+        // )
+      }
+    } catch (error) {
+      dispatch(hideLoader())
+      toast.error(error?.message)
+    }
+  }
+
+
+
   useEffect(() => {
     getMessagesAll()
+    if (selectedChat?.lastMessage?.sender !== user?._id) {
+      clearUnreadCountAndTrue()
+    }
+    socket.off("receive-message").on("receive-message", data => {
+      console.log(data)
+      setAllMessages(prevMsg => [...prevMsg, data])
+    })
   }, [selectedChat])
   return (
     <>
@@ -62,7 +108,7 @@ const ChatArea = () => {
 
         {/* header */}
         <div className="app-chat-area-header">
-          {selectedUser?.firstName + " " + selectedUser?.lastName}
+          {formatName(selectedUser)}
         </div>
 
         {/* chat area */}
@@ -73,7 +119,7 @@ const ChatArea = () => {
               <div>
                 <div className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>
                 <div className='message-timestamp' style={isCurrentUserSender ? { float: "right" } : { float: "left" }}>
-                  {formatTime(msg?.createdAt)}
+                  {formatTime(msg?.createdAt)} {isCurrentUserSender && msg?.read && <i style={{ color: "green" }} className='fa fa-check-circle'></i>}
                 </div>
               </div>
             </div>

@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLoggedUser, getAllUsers } from "../apiCalls/user.js"
 import { getAllChats } from "../apiCalls/chat.js"
-
 import { useDispatch } from "react-redux";
 import { setUser, setAllUsers, setAllChats } from "../redux/userSlice.js";
 function ProtectedRoute({ children }) {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
+    //get logged user
     const getLoggedUserDB = async (e) => {
         let response = null
         try {
@@ -23,7 +23,7 @@ function ProtectedRoute({ children }) {
         }
     }
 
-    // except logged user
+    //all users except logged user
     const getAllUsersFromDB = async (e) => {
         let response = null
         try {
@@ -38,7 +38,7 @@ function ProtectedRoute({ children }) {
         }
     }
 
-    // find({ members: { $in: req.body.userId } }).populate("members")
+    // find({ members: { $in: req.body.userId } }).populate("members") // all chats that includes/contains logged-user
     const getAllChatsFromDB = async (e) => {
         let response = null
         try {

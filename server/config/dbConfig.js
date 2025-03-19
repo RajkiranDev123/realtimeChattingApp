@@ -9,12 +9,13 @@ mongoose.connect(process.env.DB_CONN)
 const db = mongoose.connection
 
 //on is event listener,db is event emitter
+
 db.on("connected", () => {
     console.log("DB Connected!")
 })
 
 db.on("err", () => {
-    console.log("DB not Connected!")
+    console.log("DB failed to Connect!")
 })
 
 export default db

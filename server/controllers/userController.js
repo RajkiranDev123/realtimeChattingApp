@@ -17,7 +17,8 @@ export const getLoggedUser = async (req, res) => {
 export const getAllUsers = async (req, res) => {
     try {
         // query operator : $ne is logical operator
-        const allUsers = await UserModel.find({ _id: {$ne:req.body.userId} }).select('-password')
+        //firstname,lastName,email,password,profilePic
+        const allUsers = await UserModel.find({ _id: { $ne: req.body.userId } }).select('-password')
 
         return res.status(200).json({ message: "All Users except logged user fetched Successfully!", success: true, data: allUsers })
 
@@ -25,4 +26,3 @@ export const getAllUsers = async (req, res) => {
         return res.status(500).json({ message: error.message, success: false })
     }
 }
- 
