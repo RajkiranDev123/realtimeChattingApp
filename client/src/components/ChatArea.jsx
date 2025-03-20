@@ -8,8 +8,11 @@ import { showLoader, hideLoader } from '../redux/loaderSlice'
 import { toast } from "react-hot-toast"
 import { formatName } from "../utils/formatName.js"
 
+import store from "../redux/store.js"
+
 import moment from "moment"
 import { formatTime } from '../utils/formatTime'
+import { setAllChats } from '../redux/userSlice.js'
 const ChatArea = ({ socket }) => {
   const dispatch = useDispatch()
   const { selectedChat, user, allChats } = useSelector(state => state.userReducer)
@@ -30,9 +33,9 @@ const ChatArea = ({ socket }) => {
 
       socket.emit("send-message", {
         ...newMessage,
-        members: selectedChat.members.map(m => m._id),
+        members: selectedChat?.members?.map(m => m?._id),
         read: false,
-        createdAt: moment().format("DD-MM-YY hh:mm:ss")
+        createdAt: moment().format("YYYY-MM-DD HH:mm:ss")
 
       })
 
@@ -72,15 +75,20 @@ const ChatArea = ({ socket }) => {
   const clearUnreadCountAndTrue = async (e) => {
     let response = null
     try {
-      dispatch(showLoader())
+      // dispatch(showLoader())
+      socket.emit("clear-unread-messages", {
+        chatId: selectedChat?._id,
+        members: selectedChat?.members.map(m => m._id)
+      })
       response = await clearUnreadMessageCountAndMessageReadTrue(selectedChat?._id)
-      dispatch(hideLoader())
+      // dispatch(hideLoader())
       if (response?.success) {
         // allChats.map(chat => {
         //   if (chat?._id === selectedChat?._id) {
         //     return response.data
         //   }
         //   return chat
+
         // }
         // )
       }
@@ -97,11 +105,55 @@ const ChatArea = ({ socket }) => {
     if (selectedChat?.lastMessage?.sender !== user?._id) {
       clearUnreadCountAndTrue()
     }
-    socket.off("receive-message").on("receive-message", data => {
-      console.log(data)
-      setAllMessages(prevMsg => [...prevMsg, data])
+
+    //
+    socket.off("receive-message").on("receive-message", message => {
+      const selectedChat = store.getState().userReducer.selectedChat
+      if (selectedChat?._id == message?.chatId) {
+        //otherwise other selected chat will receive message too
+        setAllMessages(prevMsg => [...prevMsg, message])
+      }
+
+      if (selectedChat?._id == message?.chatId && message?.sender !== user?._id) {
+        //unread message count to 0 and read true for all messages of that chat id while receiving message on selected chat only
+        clearUnreadCountAndTrue() //from db
+      }
+    })
+
+    //update on redux
+    socket.on("message-count-cleared", data => {
+      const selectedChat = store.getState().userReducer.selectedChat
+      const allChats = store.getState().userReducer.allChats
+
+      //update allChats
+      if (selectedChat?._id == data?.chatId) {
+        const updatedChats = allChats.map(chat => {
+          if (chat?._id == data?.chatId) {
+            return { ...chat, unreadMessageCount: 0 }
+          }
+          return chat
+        })
+        dispatch(setAllChats(updatedChats))
+      }
+
+      //update read to true in all Messages
+
+      setAllMessages(prevMsgs => {
+        return prevMsgs.map(msg => {
+          return { ...msg, read: true }
+        })
+      })
+
+
+
+
     })
   }, [selectedChat])
+
+  useEffect(() => {
+    const msgContainer = document.getElementById("main-chat-area")
+    msgContainer.scrollTop = msgContainer.scrollHeight
+  }, [allMessages])
   return (
     <>
       {selectedChat && <div className="app-chat-area">
@@ -112,14 +164,15 @@ const ChatArea = ({ socket }) => {
         </div>
 
         {/* chat area */}
-        <div className="main-chat-area">
+        <div className="main-chat-area" id="main-chat-area">
           {allMessages?.map(msg => {
             const isCurrentUserSender = msg?.sender === user?._id
             return <div className="message-container" style={isCurrentUserSender ? { justifyContent: "end" } : { justifyContent: "start" }}>
               <div>
                 <div className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>
                 <div className='message-timestamp' style={isCurrentUserSender ? { float: "right" } : { float: "left" }}>
-                  {formatTime(msg?.createdAt)} {isCurrentUserSender && msg?.read && <i style={{ color: "green" }} className='fa fa-check-circle'></i>}
+                  {formatTime(msg?.createdAt)}
+                  {isCurrentUserSender && msg?.read && <i style={{ color: "green" }} className='fa fa-check-circle'></i>}
                 </div>
               </div>
             </div>

@@ -25,7 +25,7 @@ const index = () => {
       
       {/* flex */}
       <div className="main-content">
-        <Sidebar />
+        <Sidebar socket={socket}/>
         {selectedChat && <ChatArea socket={socket}/>}
       </div>
 

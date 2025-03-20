@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "./userlist.css"
 import { useDispatch, useSelector, Provider } from "react-redux"
 import { createNewChat } from "../apiCalls/chat"
@@ -7,29 +7,34 @@ import { showLoader, hideLoader } from "../redux/loaderSlice"
 import { toast } from "react-hot-toast"
 import moment from "moment"
 import { formatName } from "../utils/formatName.js"
+import store from '../redux/store.js'
 
-const UserList = ({ searchKey }) => {
+const UserList = ({ searchKey, socket }) => {
     const { allUsers, allChats, user: currentUser, selectedChat } = useSelector(state => state.userReducer)
     const dispatch = useDispatch()
-    const openChat = (selectedUserId) => {
-        //find : true then return first element
+
+    const openChat = (selectedUserId) => {//openchatArea
+        //find the chat that contains selectedUserId and currentUserId in members
         const chat = allChats.find(chat =>
-            chat.members.map(m => m._id).includes(currentUser._id) && chat.members.map(m => m._id).includes(selectedUserId)
+            chat?.members?.map(m => m?._id).includes(currentUser?._id) &&
+            chat?.members?.map(m => m?._id)?.includes(selectedUserId)
         )
         if (chat) {
             dispatch(setSelectedChat(chat))
         }
     }
 
-    const isSelectedChat = (user) => {
+    const isSelectedChat = (selectedUser) => {
+        //check if selectedUser contains in members of selected chat
         if (selectedChat) {
-            return selectedChat?.members.map(m => m._id).includes(user._id)
+            return selectedChat?.members?.map(m => m?._id)?.includes(selectedUser?._id)
         }
         return false
     }
-    const getLastMessage = (selectedUserId) => {
-        const chat = allChats?.find(chat => chat?.members?.map(m => m?._id).includes(selectedUserId))
-        console.log("9", chat)
+
+    const getLastMessage = (userId) => {
+        const chat = allChats?.find(chat => chat?.members?.map(m => m?._id).includes(userId))
+
         if (!chat || !chat?.lastMessage) {
             return ""
         } else {
@@ -38,16 +43,16 @@ const UserList = ({ searchKey }) => {
         }
     }
 
-    const getUnreadMessageCount = (selectedUserId) => {
-        const chat = allChats?.find(chat => chat?.members?.map(m => m?._id).includes(selectedUserId))
+    const getUnreadMessageCount = (userId) => {
+        const chat = allChats?.find(chat => chat?.members?.map(m => m?._id).includes(userId))
         if (chat && chat?.unreadMessageCount && chat?.lastMessage?.sender !== currentUser?._id) {
             return chat?.unreadMessageCount
         } else {
             return ""
         }
     }
-    const getLastMessageTimeStamp = (selectedUserId) => {
-        const chat = allChats?.find(chat => chat?.members?.map(m => m?._id).includes(selectedUserId))
+    const getLastMessageTimeStamp = (userId) => {
+        const chat = allChats?.find(chat => chat?.members?.map(m => m?._id).includes(userId))
         if (!chat || !chat?.lastMessage) {
             return ""
         } else {
@@ -90,30 +95,57 @@ const UserList = ({ searchKey }) => {
             })
         }
     }
+
+
+    useEffect(() => {
+        //update unreadMessageCount even if other chats are selected while recieving message
+        socket.on("receive-message", message => {
+            const selectedChat = store.getState().userReducer.selectedChat
+            const allChats = store.getState().userReducer.allChats
+            if (selectedChat?._id !== message?.chatId) {
+                const updatedChats = allChats.map(chat => {
+                        if (chat?._id == message?.chatId) {
+                            return {
+                                ...chat,
+                                unreadMessageCount: (chat?.unreadMessageCount || 0) + 1,
+                                lastMessage: message
+                            }
+                        }
+                        return chat
+                })
+                dispatch(setAllChats(updatedChats))
+            }
+
+        })
+    }, [])
+
+
+
     return (
         getData().map(obj => {
             let user = obj
-            if (obj.members) {
+            if (obj.members) {//take user which is not a logged user from allChats 
                 user = obj?.members?.find(mem => mem?._id !== currentUser?._id)
             }
-            return <div className="user-search-filter" onClick={() => openChat(user._id)}>
+            return <div className="user-search-filter" onClick={() => openChat(user?._id)}>
 
                 <div className={isSelectedChat(user) ? "selected-user" : "filtered-user"}>
 
                     <div className="filter-user-display">
                         {/* profile pic */}
                         {user?.profilePic && <img src={""} alt="Profile Pic" className="user-profile-image" />}
-                        {/* short name */}
+                        {/*or short name */}
                         {!user?.profilePic &&
                             <div className={isSelectedChat(user) ? "user-selected-avatar" : "user-default-avatar"}>
                                 {user?.firstName[0]?.toUpperCase() + " " + user?.lastName[0]?.toUpperCase()}
                             </div>}
-                        {/* firstname and email */}
+                        {/* full name and lastMessage or email */}
                         <div className="filter-user-details">
                             <div className="user-display-name">  {formatName(user)}</div>
                             <div className="user-display-email">{getLastMessage(user?._id) || user?.email}</div>
                         </div>
-                        {/* time and count*/}
+
+                        {/* count and time*/}
                         <div>
                             <div style={{ color: "white", }}>{getUnreadMessageCount(user?._id)}</div>
                             <div style={{ color: "white" }}>{getLastMessageTimeStamp(user?._id)}</div>
@@ -123,7 +155,7 @@ const UserList = ({ searchKey }) => {
 
                         {/* start chat button ,       collect _id's */}
                         {!allChats.find(chat => chat?.members.map(m => m?._id).includes(user?._id)) && <div className="user-start-chat">
-                            <button onClick={() => createChat(user._id)} className="user-start-chat-btn">Start Chat</button>
+                            <button onClick={() => createChat(user?._id)} className="user-start-chat-btn">Start Chat</button>
                         </div>}
 
                     </div>
