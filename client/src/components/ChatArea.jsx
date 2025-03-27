@@ -29,14 +29,11 @@ const ChatArea = ({ socket }) => {
         text: message
       }
       if (message == "") { return }
-
-
       socket.emit("send-message", {
         ...newMessage,
         members: selectedChat?.members?.map(m => m?._id),
         read: false,
         createdAt: moment().format("YYYY-MM-DD HH:mm:ss")
-
       })
 
       // dispatch(showLoader())
@@ -46,7 +43,6 @@ const ChatArea = ({ socket }) => {
       if (response.success) {
         toast.success(response.message)
         setNewMessage("")
-
       }
     } catch (error) {
       // dispatch(hideLoader())
@@ -102,31 +98,37 @@ const ChatArea = ({ socket }) => {
 
   useEffect(() => {
     getMessagesAll()
+    // for receiver : set count to 0 and read to true in db
     if (selectedChat?.lastMessage?.sender !== user?._id) {
-      clearUnreadCountAndTrue()
+      clearUnreadCountAndTrue()//only for receiver
     }
 
-    //
+    //dont call getAllmessages api after sending msg instead listen to an event and update the redux : api call reduced!
     socket.off("receive-message").on("receive-message", message => {
       const selectedChat = store.getState().userReducer.selectedChat
       if (selectedChat?._id == message?.chatId) {
         //otherwise other selected chat will receive message too
-        setAllMessages(prevMsg => [...prevMsg, message])
+        setAllMessages(prevMsg => [...prevMsg, message]) //update on state
       }
 
+
+
+      ////////////////////////////////////////////////     receiver
       if (selectedChat?._id == message?.chatId && message?.sender !== user?._id) {
         //unread message count to 0 and read true for all messages of that chat id while receiving message on selected chat only
         clearUnreadCountAndTrue() //from db
       }
-    })
+    })//receive message
 
-    //update on redux
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //update on redux withou making api call
     socket.on("message-count-cleared", data => {
       const selectedChat = store.getState().userReducer.selectedChat
       const allChats = store.getState().userReducer.allChats
 
-      //update allChats
-      if (selectedChat?._id == data?.chatId) {
+      //update particular chat to set count to 0
+      if (selectedChat?._id == data?.chatId) {//only if chat area is open
         const updatedChats = allChats.map(chat => {
           if (chat?._id == data?.chatId) {
             return { ...chat, unreadMessageCount: 0 }
@@ -144,10 +146,8 @@ const ChatArea = ({ socket }) => {
         })
       })
 
+    })//message count cleared
 
-
-
-    })
   }, [selectedChat])
 
   useEffect(() => {
@@ -169,12 +169,17 @@ const ChatArea = ({ socket }) => {
             const isCurrentUserSender = msg?.sender === user?._id
             return <div className="message-container" style={isCurrentUserSender ? { justifyContent: "end" } : { justifyContent: "start" }}>
               <div>
+                {/* text */}
                 <div className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>
+
+                {/* time and tick */}
                 <div className='message-timestamp' style={isCurrentUserSender ? { float: "right" } : { float: "left" }}>
                   {formatTime(msg?.createdAt)}
                   {isCurrentUserSender && msg?.read && <i style={{ color: "green" }} className='fa fa-check-circle'></i>}
                 </div>
+
               </div>
+
             </div>
           })}
         </div>

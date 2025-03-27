@@ -21,3 +21,4 @@ git push -u origin main
 npm i jsonwebtoken
 npm install cors
 npm i socket.io
+npm i nodemailer

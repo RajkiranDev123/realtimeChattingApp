@@ -75,7 +75,7 @@ const index = () => {
             <input type="password" value={user.password}
               onChange={(e) => setUser({ ...user, password: e.target.value })} placeholder="Password" />
             <button>Login</button>
-            
+
           </form>
         </div>
         {/* form ends */}
@@ -85,6 +85,9 @@ const index = () => {
             <Link to={"/signup"}>Signup Here</Link>
           </span>
         </div>
+        <p style={{textAlign:"center"}}>
+          <Link style={{color:"green"}} to={"/email"}>Forgot password?</Link>
+        </p>
 
       </div>
       {/* card ends */}

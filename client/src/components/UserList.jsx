@@ -32,9 +32,9 @@ const UserList = ({ searchKey, socket }) => {
         return false
     }
 
+    //for all users
     const getLastMessage = (userId) => {
         const chat = allChats?.find(chat => chat?.members?.map(m => m?._id).includes(userId))
-
         if (!chat || !chat?.lastMessage) {
             return ""
         } else {
@@ -43,6 +43,7 @@ const UserList = ({ searchKey, socket }) => {
         }
     }
 
+    //for all users
     const getUnreadMessageCount = (userId) => {
         const chat = allChats?.find(chat => chat?.members?.map(m => m?._id).includes(userId))
         if (chat && chat?.unreadMessageCount && chat?.lastMessage?.sender !== currentUser?._id) {
@@ -51,6 +52,8 @@ const UserList = ({ searchKey, socket }) => {
             return ""
         }
     }
+
+    //for all users
     const getLastMessageTimeStamp = (userId) => {
         const chat = allChats?.find(chat => chat?.members?.map(m => m?._id).includes(userId))
         if (!chat || !chat?.lastMessage) {
@@ -89,6 +92,7 @@ const UserList = ({ searchKey, socket }) => {
             //////// allUsers except logged user
             return allUsers?.filter(user => {
                 return (
+                    ///////////////// ram ///////////////////// s /////////////////////
                     user?.firstName.toLowerCase().includes(searchKey.toLowerCase()) ||
                     user?.lastName.toLowerCase().includes(searchKey.toLowerCase())
                 )
@@ -96,22 +100,21 @@ const UserList = ({ searchKey, socket }) => {
         }
     }
 
-
     useEffect(() => {
-        //update unreadMessageCount even if other chats are selected while recieving message
+        //update unreadMessageCount for other users/friends
         socket.on("receive-message", message => {
             const selectedChat = store.getState().userReducer.selectedChat
             const allChats = store.getState().userReducer.allChats
             if (selectedChat?._id !== message?.chatId) {
                 const updatedChats = allChats.map(chat => {
-                        if (chat?._id == message?.chatId) {
-                            return {
-                                ...chat,
-                                unreadMessageCount: (chat?.unreadMessageCount || 0) + 1,
-                                lastMessage: message
-                            }
+                    if (chat?._id == message?.chatId) {
+                        return {
+                            ...chat,
+                            unreadMessageCount: (chat?.unreadMessageCount || 0) + 1,
+                            lastMessage: message
                         }
-                        return chat
+                    }
+                    return chat
                 })
                 dispatch(setAllChats(updatedChats))
             }
