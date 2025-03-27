@@ -1,35 +1,41 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { loginUser } from "../../apiCalls/auth"
+import { Link, useNavigate ,useParams} from 'react-router-dom'
+import { verifyOtp } from "../../apiCalls/otp"
 import { toast } from "react-hot-toast"
 
+import { useDispatch } from "react-redux"
+
+import { hideLoader, showLoader } from '../../redux/loaderSlice';
 
 
-
-/////////////////// otp /////////////////////////
+///////////////////verify otp /////////////////////////
 const index = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const params=useParams()
+
     const [otp, setOtp] = useState("")
 
 
 
     const submit = async (e) => {
-        navigate("/changePassword")
+
         e.preventDefault()
-        if (!user.email || !user.password) {
-            toast.error("All fields are required!")
+        if (otp.length > 4 || otp.length < 4) {
+            toast.error("Otp must be 4 digits!")
             return
         }
         let response = null //to access in catch block
         try {
             dispatch(showLoader())
-            response = await loginUser(user)
+            response = await verifyOtp(params?.email,otp)
 
             if (response.success) {
-                localStorage.setItem("token", response.token)
+           
                 dispatch(hideLoader())
                 toast.success(response.message)
-                navigate("/")
+                navigate(`/changePassword/${params?.email}`)
             } else {
                 toast.error(response.message)
                 dispatch(hideLoader())
@@ -49,7 +55,7 @@ const index = () => {
             <div className="card">
 
                 <div className="card_title">
-                    <h1 style={{color:"blue"}}>Check you Email , OTP is sent !</h1>
+                    <h1 style={{ color: "blue" }}>Check you Email , OTP is sent !</h1>
                 </div>
 
                 <div className="card_title">
@@ -64,7 +70,7 @@ const index = () => {
 
 
                         <input type="text"
-                            onChange={(e) => { }} placeholder="otp" />
+                            onChange={(e) => { setOtp(e.target.value) }} placeholder="otp" />
                         <button>Verify OTP</button>
 
                     </form>

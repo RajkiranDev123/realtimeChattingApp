@@ -33,7 +33,7 @@ const index = () => {
 
                 dispatch(hideLoader())
                 toast.success(response.message)
-                // navigate("/")
+                navigate(`/otp/${email}`)
             } else {
                 toast.error(response.message)
                 dispatch(hideLoader())
