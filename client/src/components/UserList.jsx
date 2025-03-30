@@ -154,7 +154,7 @@ const UserList = ({ searchKey, socket, onlineUser }) => {
                         {/* count and time*/}
                         <div>
                             <div style={{ color: "white", }}>{getUnreadMessageCount(user?._id)}</div>
-                            <div style={{ color: "white" }}>{getLastMessageTimeStamp(user?._id)}</div>
+                            <div className='timestamp' style={{ color: "white" }}>{getLastMessageTimeStamp(user?._id)}</div>
 
                         </div>
 
