@@ -6,6 +6,7 @@ import Signup from "./pages/signup"
 import Email from "./pages/email"
 import Otp from "./pages/otp"
 import ChangePassword from "./pages/changepassword"
+import Profile from "./pages/profile"
 
 
 
@@ -23,6 +24,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>
+          <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>}></Route>
+
           <Route path='/login' element={<Login />}></Route>
           <Route path='/signup' element={<Signup />}></Route>
           <Route path='/email' element={<Email />}></Route>

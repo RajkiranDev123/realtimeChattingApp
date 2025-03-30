@@ -47,11 +47,11 @@ const index = () => {
       <div className="card">
 
         <div>
-          <p style={{ fontWeight: "bold", textAlign: "center", color: "green" }}>Chat Fast!</p>
+          <p style={{ fontWeight: "bold", textAlign: "center", color: "#818589" }}>Chat Fast 📲!</p>
         </div>
 
         <div className="card_title">
-          <h1>Login Here</h1>
+          <h1 style={{color:"#36454F"}}>Login Here 🔑</h1>
         </div>
 
         {/* form starts */}
@@ -81,12 +81,12 @@ const index = () => {
         {/* form ends */}
 
         <div className="card_terms">
-          <span>Don't have an account yet?
+          <span style={{color:"#71797E"}}>Don't have an account yet?
             <Link to={"/signup"}>Signup Here</Link>
           </span>
         </div>
         <p style={{textAlign:"center"}}>
-          <Link style={{color:"green"}} to={"/email"}>Forgot password?</Link>
+          <Link style={{color:"#8A9A5B"}} to={"/email"}>Forgot password?</Link>
         </p>
 
       </div>

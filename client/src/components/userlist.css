@@ -40,7 +40,7 @@
     line-height: 50px;
   }
   .user-default-avatar{
-    background-color: #e74c3c;
+    background-color: #36454F;
     color: white;
   }
   .user-selected-avatar{
@@ -63,7 +63,7 @@
   padding: 10px 10px;
   color: white;
   cursor: pointer;
-  background-color: #e74c3c;
+  background-color: 	#478778;
 }
 
 .selected-user-avatar{

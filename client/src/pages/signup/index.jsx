@@ -44,7 +44,7 @@ const index = () => {
       <div className="card">
 
         <div className="card_title">
-          <h1>Create Account</h1>
+          <h1 style={{color:"#36454F"}}>Create Account 👨‍💼</h1>
         </div>
 
         <div className="form">
@@ -62,7 +62,7 @@ const index = () => {
         </div>
 
         <div className="card_terms">
-          <span>Already have an account?
+          <span style={{color:"#71797E"}}>Already have an account?
             <Link to={"/login"}>Login Here</Link>
           </span>
         </div>

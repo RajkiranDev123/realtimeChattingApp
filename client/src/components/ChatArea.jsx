@@ -202,7 +202,7 @@ const ChatArea = ({ socket }) => {
 
         {/* emoji starts */}
         <div>
-          {showEmojiPicker && <EmojiPicker onEmojiClick={(e) => setNewMessage(message + e.emoji)}></EmojiPicker>}
+          {showEmojiPicker && <EmojiPicker style={{height:350,width:300}} onEmojiClick={(e) => setNewMessage(message + e.emoji)}></EmojiPicker>}
         </div>
         {/* emoji starts */}
 

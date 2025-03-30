@@ -9,7 +9,7 @@
 
 /*************CSS STYLES FOR LOGIN & SIGNUP**************/
 .container-back-img{
-  background-image: url('./bg.jpg');
+  background-image: url('./bgchat.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
@@ -38,10 +38,11 @@
 .card {
   border-radius: 3px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
-  width: 500px;
+  width: 480px;
 
   background-color: #cbcacf;
   padding: 50px 35px;
+  opacity: 0.8;
 }
 .column{
   display: flex;

@@ -28,7 +28,7 @@ const index = () => {
     }
   }, [user])
   return (
-    <div className="home-page">
+    <div style={{background:"#C0C0C0"}} className="home-page">
 
       <Header />
 
