@@ -28,9 +28,6 @@ function App() {
           <Route path='/email' element={<Email />}></Route>
           <Route path='/otp/:email' element={<Otp />}></Route>
           <Route path='/changePassword/:email' element={<ChangePassword />}></Route>
-
-
-
         </Routes>
       </BrowserRouter>
     </>

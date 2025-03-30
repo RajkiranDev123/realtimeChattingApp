@@ -17,6 +17,9 @@ const io = new Server(server, {
 });
 app.use("/api/v1", routes)
 //io : event emmiter , connection : event name , event handler : socket , on : event listener
+
+const onlineUser = []
+
 io.on("connection", socket => {
     // console.log("socket id ==>", socket.id)
     socket.on("join-room", userId => {
@@ -32,6 +35,19 @@ io.on("connection", socket => {
     socket.on("clear-unread-messages", data => {
         io.to(data.members[0]).to(data.members[1])
             .emit("message-count-cleared", data)
+    })
+    //user typing
+    socket.on("user-typing", data => {
+        io.to(data.members[0]).to(data.members[1])
+            .emit("started-typing", data)
+    })
+
+    //online users
+    socket.on("user-login", userId => {
+        if (!onlineUser.includes(userId)) {
+            onlineUser.push(userId)
+        }
+        socket.emit("online-users", onlineUser)
     })
 })
 export default server

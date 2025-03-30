@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./home.css"
 import Header from "../../components/Header.jsx"
 import Sidebar from '../../components/Sidebar.jsx'
@@ -12,21 +12,30 @@ import io from "socket.io-client"
 const socket = io.connect("http://localhost:3001")//backend server address
 
 const index = () => {
-  const { selectedChat,user } = useSelector(state => state.userReducer)
+  const { selectedChat, user } = useSelector(state => state.userReducer)
+  const [ onlineUser, setOnlineUser ] = useState([])
+
   useEffect(() => {
-    if(user){
-      socket.emit("join-room",user?._id)
+    if (user) {
+      socket.emit("join-room", user?._id)
+
+      // online users
+      socket.emit("user-login", user?._id)
+
+      socket.on("online-users", onlineusers => {
+        setOnlineUser(onlineusers)
+      })
     }
   }, [user])
   return (
     <div className="home-page">
 
       <Header />
-      
+
       {/* flex */}
       <div className="main-content">
-        <Sidebar socket={socket}/>
-        {selectedChat && <ChatArea socket={socket}/>}
+        <Sidebar onlineUser={onlineUser} socket={socket} />
+        {selectedChat && <ChatArea socket={socket} />}
       </div>
 
     </div>

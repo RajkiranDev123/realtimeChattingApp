@@ -3,12 +3,12 @@ import "./sidebar.css"
 import Search from './Search'
 import UserList from './UserList'
 
-const Sidebar = ({socket}) => {
+const Sidebar = ({ socket, onlineUser }) => {
   const [searchKey, setSearchKey] = useState("")
   return (
     <div className="app-sidebar">
       <Search searchKey={searchKey} setSearchKey={setSearchKey} />
-      <UserList socket={socket} searchKey={searchKey} />
+      <UserList onlineUser={onlineUser} socket={socket} searchKey={searchKey} />
     </div>
 
   )

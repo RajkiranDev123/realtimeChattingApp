@@ -13,12 +13,21 @@ import store from "../redux/store.js"
 import moment from "moment"
 import { formatTime } from '../utils/formatTime'
 import { setAllChats } from '../redux/userSlice.js'
+import EmojiPicker from "emoji-picker-react"
 const ChatArea = ({ socket }) => {
   const dispatch = useDispatch()
   const { selectedChat, user, allChats } = useSelector(state => state.userReducer)
+
   const selectedUser = selectedChat?.members.find(u => u?._id !== user?._id)
+
   const [message, setNewMessage] = useState("")
   const [allMessages, setAllMessages] = useState([])
+  const [isTyping, setIsTyping] = useState(false)
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+
+
+
+
 
   const sendMessage = async (e) => {
     let response = null
@@ -43,6 +52,7 @@ const ChatArea = ({ socket }) => {
       if (response.success) {
         toast.success(response.message)
         setNewMessage("")
+        setShowEmojiPicker(false)
       }
     } catch (error) {
       // dispatch(hideLoader())
@@ -58,7 +68,7 @@ const ChatArea = ({ socket }) => {
       dispatch(hideLoader())
       if (response?.success) {
         toast.success(response?.message)
-        setAllMessages(response?.data)
+        setAllMessages(response?.data)//in state not redux
       }
     } catch (error) {
       dispatch(hideLoader())
@@ -71,7 +81,7 @@ const ChatArea = ({ socket }) => {
   const clearUnreadCountAndTrue = async (e) => {
     let response = null
     try {
-      // dispatch(showLoader())
+      ///check : message-count-cleared
       socket.emit("clear-unread-messages", {
         chatId: selectedChat?._id,
         members: selectedChat?.members.map(m => m._id)
@@ -102,7 +112,6 @@ const ChatArea = ({ socket }) => {
     if (selectedChat?.lastMessage?.sender !== user?._id) {
       clearUnreadCountAndTrue()//only for receiver
     }
-
     //dont call getAllmessages api after sending msg instead listen to an event and update the redux : api call reduced!
     socket.off("receive-message").on("receive-message", message => {
       const selectedChat = store.getState().userReducer.selectedChat
@@ -111,24 +120,18 @@ const ChatArea = ({ socket }) => {
         setAllMessages(prevMsg => [...prevMsg, message]) //update on state
       }
 
-
-
       ////////////////////////////////////////////////     receiver
       if (selectedChat?._id == message?.chatId && message?.sender !== user?._id) {
-        //unread message count to 0 and read true for all messages of that chat id while receiving message on selected chat only
         clearUnreadCountAndTrue() //from db
       }
-    })//receive message
-
+    })
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     //update on redux withou making api call
     socket.on("message-count-cleared", data => {
       const selectedChat = store.getState().userReducer.selectedChat
       const allChats = store.getState().userReducer.allChats
 
-      //update particular chat to set count to 0
-      if (selectedChat?._id == data?.chatId) {//only if chat area is open
+      if (selectedChat?._id == data?.chatId) {//only if chat area of receiver is open 
         const updatedChats = allChats.map(chat => {
           if (chat?._id == data?.chatId) {
             return { ...chat, unreadMessageCount: 0 }
@@ -137,23 +140,30 @@ const ChatArea = ({ socket }) => {
         })
         dispatch(setAllChats(updatedChats))
       }
-
       //update read to true in all Messages
-
       setAllMessages(prevMsgs => {
         return prevMsgs.map(msg => {
           return { ...msg, read: true }
         })
       })
-
     })//message count cleared
+
+    //listen to started-typing
+    socket.on("started-typing", data => {
+      if (selectedChat?._id == data?.chatId && data?.sender !== user?._id) {
+        setIsTyping(true)
+        setTimeout(() => {
+          setIsTyping(false)
+        }, 2000)
+      }
+    })
 
   }, [selectedChat])
 
   useEffect(() => {
     const msgContainer = document.getElementById("main-chat-area")
     msgContainer.scrollTop = msgContainer.scrollHeight
-  }, [allMessages])
+  }, [allMessages, isTyping,showEmojiPicker])
   return (
     <>
       {selectedChat && <div className="app-chat-area">
@@ -168,6 +178,7 @@ const ChatArea = ({ socket }) => {
           {allMessages?.map(msg => {
             const isCurrentUserSender = msg?.sender === user?._id
             return <div className="message-container" style={isCurrentUserSender ? { justifyContent: "end" } : { justifyContent: "start" }}>
+              {/* 3rd div starts */}
               <div>
                 {/* text */}
                 <div className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>
@@ -177,17 +188,48 @@ const ChatArea = ({ socket }) => {
                   {formatTime(msg?.createdAt)}
                   {isCurrentUserSender && msg?.read && <i style={{ color: "green" }} className='fa fa-check-circle'></i>}
                 </div>
+                {/* time and tick */}
+
 
               </div>
+              {/* 3rd div ends*/}
 
             </div>
           })}
+          <div>{isTyping && <i style={{ color: "grey", fontSize: 10 }}>typing...</i>}</div>
         </div>
+        {/* chat area ends */}
+
+        {/* emoji starts */}
+        <div>
+          {showEmojiPicker && <EmojiPicker onEmojiClick={(e) => setNewMessage(message + e.emoji)}></EmojiPicker>}
+        </div>
+        {/* emoji starts */}
+
+
+
 
         {/* input and send button */}
         <div className="send-message-div">
-          <input value={message} onChange={(e) => setNewMessage(e.target.value)} type="text" className="send-message-input"
+          <input value={message} onChange={(e) => {
+            setNewMessage(e.target.value)
+            socket.emit("user-typing", {
+              chatId: selectedChat?._id,
+              members: selectedChat?.members.map(m => m._id),
+              sender: user?._id
+            })
+
+          }
+          }
+            type="text" className="send-message-input"
             placeholder="Type a message" />
+
+          {/* emoji button opener */}
+          <button className='fa fa-smile-o send-emoji-btn' onClick={() => setShowEmojiPicker(!showEmojiPicker)}></button>
+          {/* emoji button  */}
+
+
+          {/* send button */}
           <button onClick={() => sendMessage()} className="fa fa-paper-plane send-message-btn" aria-hidden="true"></button>
         </div>
 

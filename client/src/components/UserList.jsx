@@ -9,12 +9,15 @@ import moment from "moment"
 import { formatName } from "../utils/formatName.js"
 import store from '../redux/store.js'
 
-const UserList = ({ searchKey, socket }) => {
+const UserList = ({ searchKey, socket, onlineUser }) => {
+    //allChats: chats that contains current user in members
     const { allUsers, allChats, user: currentUser, selectedChat } = useSelector(state => state.userReducer)
     const dispatch = useDispatch()
 
+
+
     const openChat = (selectedUserId) => {//openchatArea
-        //find the chat that contains selectedUserId and currentUserId in members
+        //members, unreadMessageCount , lastMessage
         const chat = allChats.find(chat =>
             chat?.members?.map(m => m?._id).includes(currentUser?._id) &&
             chat?.members?.map(m => m?._id)?.includes(selectedUserId)
@@ -136,10 +139,10 @@ const UserList = ({ searchKey, socket }) => {
 
                     <div className="filter-user-display">
                         {/* profile pic */}
-                        {user?.profilePic && <img src={""} alt="Profile Pic" className="user-profile-image" />}
+                        {user?.profilePic && <img src={""} style={{ border: onlineUser?.includes(user?._id) ? "2px solid green" : "" }} alt="Profile Pic" className="user-profile-image" />}
                         {/*or short name */}
                         {!user?.profilePic &&
-                            <div className={isSelectedChat(user) ? "user-selected-avatar" : "user-default-avatar"}>
+                            <div className={isSelectedChat(user) ? "user-selected-avatar" : "user-default-avatar"} style={{ border: onlineUser?.includes(user?._id) ? "3px solid green" : "" }}>
                                 {user?.firstName[0]?.toUpperCase() + " " + user?.lastName[0]?.toUpperCase()}
                             </div>}
                         {/* full name and lastMessage or email */}
