@@ -11,7 +11,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   height: 400,
-  bgcolor: 'background.paper',
+  bgcolor: '#F0EAD6',
 
   boxShadow: 24,
   p: 1,
@@ -38,13 +38,13 @@ export default function AIModal() {
     let res = fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer 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",
+        "Authorization": "Bearer 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",
         "HTTP-Referer": "https://www.webstylepress.com", // Optional. Site URL for rankings on openrouter.ai.
         "X-Title": "WebStylePress", // Optional. Site title for rankings on openrouter.ai.
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        "model": "deepseek/deepseek-r1:free",
+        "model": "deepseek/deepseek-r1-zero:free",
         "messages": [
           {
             "role": "user",
@@ -60,7 +60,7 @@ export default function AIModal() {
 
   return (
     <div>
-      <button style={{ borderRadius: 3, cursor: "pointer", padding: 3, background: "blue", border: "none", color: "white", margin: 1 }} onClick={handleOpen}>AI</button>
+      <button style={{ borderRadius: 3, cursor: "pointer", padding: 3, background: "blue", border: "none", color: "white", margin: 1 }} onClick={handleOpen}>AI 🧠</button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -71,15 +71,15 @@ export default function AIModal() {
           <p onClick={() => handleClose()} style={{ color: "grey", display: "flex", justifyContent: "flex-end", cursor: "pointer" }}>x</p>
 
           <div>
-            <div style={{ overflowY: "scroll", height: 250 }}>
+            <div style={{ overflowY: "scroll", height: 290,color:"grey",fontStyle:"italic" }}>
               {wait && <p style={{ color: "grey" }}>Plz Wait...</p>}
               {ans}
 
             </div>
 
-            <input style={{ width: "95%", borderRadius: 3, padding: 2, outline: "none" }} value={question} type='text' onChange={(e) => setQuestion(e.target.value)} />
+            <input placeholder='type your question...' style={{height:30, width: "95%", borderRadius: 3, padding: 2, outline: "none" ,border:"none"}} value={question} type='text' onChange={(e) => setQuestion(e.target.value)} />
             <div style={{ display: "flex", justifyContent: "space-around", margin: 2 }}>
-              <button style={{ border: "none", padding: 2, cursor: "pointer", background: "green", color: "white", borderRadius: 2 }} onClick={ask}>Ask</button>
+              <button style={{ border: "none", padding: 2, cursor: "pointer", background: "green", color: "white", borderRadius: 2 }} onClick={ask}>Click here to Ask</button>
               <button style={{ border: "none", padding: 2, cursor: "pointer", background: "blue", color: "white", borderRadius: 2 }} onClick={() => setQuestion("")}>Clear Question</button>
               <button style={{ border: "none", padding: 2, cursor: "pointer", background: "blue", color: "white", borderRadius: 2 }} onClick={() => setAns("")}>Clear Msg</button>
             </div>

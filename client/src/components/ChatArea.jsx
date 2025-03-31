@@ -201,7 +201,7 @@ const ChatArea = ({ socket }) => {
           <div>{isTyping && <i style={{ color: "grey", fontSize: 10 }}>typing...</i>}</div>
 
           <div>
-            <AIModel />
+            <AIModel /> 
           </div>
         </div>
         {/* chat area ends */}
