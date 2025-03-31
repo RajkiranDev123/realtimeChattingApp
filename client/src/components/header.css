@@ -10,7 +10,7 @@
   .app-logo{
     display: flex;
     flex-wrap: nowrap;
-    color: #0b0bb4;
+    color: green;
     font-size: 25px;
     font-weight: bold;
   }

@@ -14,6 +14,7 @@ import moment from "moment"
 import { formatTime } from '../utils/formatTime'
 import { setAllChats } from '../redux/userSlice.js'
 import EmojiPicker from "emoji-picker-react"
+import AIModel from "../components/AIModal.jsx"
 const ChatArea = ({ socket }) => {
   const dispatch = useDispatch()
   const { selectedChat, user, allChats } = useSelector(state => state.userReducer)
@@ -163,7 +164,7 @@ const ChatArea = ({ socket }) => {
   useEffect(() => {
     const msgContainer = document.getElementById("main-chat-area")
     msgContainer.scrollTop = msgContainer.scrollHeight
-  }, [allMessages, isTyping,showEmojiPicker])
+  }, [allMessages, isTyping, showEmojiPicker])
   return (
     <>
       {selectedChat && <div className="app-chat-area">
@@ -196,13 +197,18 @@ const ChatArea = ({ socket }) => {
 
             </div>
           })}
+
           <div>{isTyping && <i style={{ color: "grey", fontSize: 10 }}>typing...</i>}</div>
+
+          <div>
+            <AIModel />
+          </div>
         </div>
         {/* chat area ends */}
 
         {/* emoji starts */}
         <div>
-          {showEmojiPicker && <EmojiPicker style={{height:350,width:300}} onEmojiClick={(e) => setNewMessage(message + e.emoji)}></EmojiPicker>}
+          {showEmojiPicker && <EmojiPicker style={{ height: 350, width: 300 }} onEmojiClick={(e) => setNewMessage(message + e.emoji)}></EmojiPicker>}
         </div>
         {/* emoji starts */}
 
