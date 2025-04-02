@@ -4,8 +4,9 @@ import cors from "cors"
 import { createServer } from "http"
 import { Server } from "socket.io";
 const app = express()
+
 app.use(cors())
-app.use(express.json())// It parses the JSON payload and attaches the resulting js object to the req.body property.
+app.use(express.json({ limit: "50mb" }))// It parses the JSON payload and attaches the resulting js object to the req.body property.
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
