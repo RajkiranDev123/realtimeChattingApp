@@ -22,7 +22,9 @@ const index = () => {
     }
 
     useEffect(() => {
-        setImage(user?.profilePic)
+        if (user?.profilePic) {
+            setImage(user?.profilePic)
+        }
     }, [])
 
     return (

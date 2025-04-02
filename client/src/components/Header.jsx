@@ -1,13 +1,13 @@
 import React from 'react'
 import "./header.css"
-import {  useSelector } from 'react-redux'
-import {formatName} from "../utils/formatName.js"
+import { useSelector } from 'react-redux'
+import { formatName } from "../utils/formatName.js"
 import { useNavigate } from 'react-router-dom'
-import AIModel from "../components/AIModal.jsx"
+
 
 const Header = () => {
   const { user } = useSelector(state => state.userReducer)
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   // console.log(user)
   return (
 
@@ -23,8 +23,17 @@ const Header = () => {
 
         <div className="logged-user-name">hi, {formatName(user)}</div>
 
-        <div style={{cursor:"pointer"}} onClick={()=>navigate("/profile")}  className="logged-user-profile-pic">{user?.firstName[0] + " " + user?.lastName[0]}</div>
+        {!user?.profilePic && <div style={{ cursor: "pointer" }} onClick={() => navigate("/profile")}
+          className="logged-user-profile-pic">{user?.firstName[0] + " " + user?.lastName[0]}
+        </div>}
+
+        {/* image */}
+        {user?.profilePic && <img src={user?.profilePic} alt='pp' />}
+
+
       </div>
+
+
 
     </div>
   )
