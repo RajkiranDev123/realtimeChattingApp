@@ -24,6 +24,9 @@ const index = () => {
 
     const submit = async (e) => {
         e.preventDefault()
+        if(newPassword==""||confirmNewPassword==""){
+            toast.error("All fields are required!")
+        }
         if (newPassword !== confirmNewPassword) {
             toast.error("New and Confirm password must be same!")
             return
