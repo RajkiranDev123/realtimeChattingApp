@@ -25,12 +25,16 @@ const index = () => {
       socket.on("online-users", onlineusers => {
         setOnlineUser(onlineusers)
       })
+
+      socket.on("online-users-updated", onlineusers => {
+        setOnlineUser(onlineusers)
+      })
     }
   }, [user])
   return (
     <div style={{background:"#C0C0C0"}} className="home-page">
 
-      <Header />
+      <Header socket={socket} />
 
       {/* flex */}
       <div className="main-content">

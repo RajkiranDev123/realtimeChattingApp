@@ -9,6 +9,12 @@ const Header = () => {
   const { user } = useSelector(state => state.userReducer)
   const navigate = useNavigate()
   // console.log(user)
+  const logout=()=>{
+    localStorage.removeItem("token")
+    navigate("/login")
+    socket.emit("user-offline", user?._id)
+
+  }
   return (
 
     <div className="app-header">
@@ -19,17 +25,20 @@ const Header = () => {
         Fast Chat
       </div>
 
-      <div className="app-user-profile">
+      <div style={{alignItems:"center"}} className="app-user-profile">
 
         <div className="logged-user-name">hi, {formatName(user)}</div>
 
+
+
+        {/* image */}
+        {user?.profilePic && <img onClick={() => navigate("/profile")} style={{ width: 25, height: 25, borderRadius: "50%", cursor: "pointer",marginTop:5 }} src={user?.profilePic} alt='pp' />}
         {!user?.profilePic && <div style={{ cursor: "pointer" }} onClick={() => navigate("/profile")}
           className="logged-user-profile-pic">{user?.firstName[0] + " " + user?.lastName[0]}
         </div>}
-
-        {/* image */}
-        {user?.profilePic && <img src={user?.profilePic} alt='pp' />}
-
+  
+          <i style={{cursor:"pointer",color:"red",marginTop:10}} onClick={logout} className='fa fa-power-off'></i>
+       
 
       </div>
 

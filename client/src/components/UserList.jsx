@@ -139,7 +139,7 @@ const UserList = ({ searchKey, socket, onlineUser }) => {
 
                     <div className="filter-user-display">
                         {/* profile pic */}
-                        {user?.profilePic && <img src={""} style={{ border: onlineUser?.includes(user?._id) ? "2px solid green" : "" }} alt="Profile Pic" className="user-profile-image" />}
+                        {user?.profilePic && <img src={user?.profilePic} style={{ border: onlineUser?.includes(user?._id) ? "2px solid green" : "" }} alt="Profile Pic" className="user-profile-image" />}
                         {/*or short name */}
                         {!user?.profilePic &&
                             <div className={isSelectedChat(user) ? "user-selected-avatar" : "user-default-avatar"} style={{ border: onlineUser?.includes(user?._id) ? "3px solid green" : "" }}>

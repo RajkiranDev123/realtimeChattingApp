@@ -50,6 +50,12 @@ io.on("connection", socket => {
         }
         socket.emit("online-users", onlineUser)
     })
+
+    //offline users
+    socket.on("user-offline", userId => {
+        onlineUser.splice(onlineUser.indexOf(userId), 1)
+        io.emit("online-users-updated", onlineUser)
+    })
 })
 export default server
 

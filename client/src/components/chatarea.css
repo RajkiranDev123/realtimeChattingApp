@@ -67,6 +67,16 @@
     border: none;
     margin-top: 5px;
 }
+.send-image-btn{
+    position: absolute;
+    right: 70px;
+    font-size: 25px;
+    color: #994339;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    margin-top: 5px;
+}
 
 /*  */
 .message-container {

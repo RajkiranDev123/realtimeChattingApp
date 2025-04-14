@@ -7,7 +7,7 @@ const router = new express.Router()
 
 router.get("/get-logged-user", auth, getLoggedUser)
 router.get("/get-all-users", auth, getAllUsers)
-router.get("/upload-profile-pic", auth, uploadProfilePic)
+router.post("/upload-profile-pic", auth, uploadProfilePic)
 
 
 export default router

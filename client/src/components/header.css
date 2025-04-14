@@ -21,6 +21,8 @@
   
   .app-user-profile{
     display: flex;
+    align-items: center;
+    vertical-align: baseline;
   }
   
   .logged-user-name{

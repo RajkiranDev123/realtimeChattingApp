@@ -30,15 +30,17 @@ const ChatArea = ({ socket }) => {
 
 
 
-  const sendMessage = async (e) => {
+  const sendMessage = async (image) => {
+    console.log(77)
     let response = null
     try {
       const newMessage = {
         chatId: selectedChat?._id,
         sender: user?._id,
-        text: message
+        text: message,
+        image: image
       }
-      if (message == "") { return }
+      // if (message == "") { return }
       socket.emit("send-message", {
         ...newMessage,
         members: selectedChat?.members?.map(m => m?._id),
@@ -60,6 +62,20 @@ const ChatArea = ({ socket }) => {
       toast.error(error.message)
     }
   }
+
+  // sendImage
+  const sendImage = async (e) => {
+    console.log(9)
+    const file = e.target.files[0]
+    console.log(file)
+    const reader = new FileReader(file)
+    reader.readAsDataURL(file)
+    reader.onloadend = async () => {
+      sendMessage(reader.result)
+    }
+
+  }
+
 
   const getMessagesAll = async (e) => {
     let response = null
@@ -182,7 +198,10 @@ const ChatArea = ({ socket }) => {
               {/* 3rd div starts */}
               <div>
                 {/* text */}
-                <div className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>
+                {msg?.text && <div className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>}
+                <div >{msg?.image && <img src={msg?.image} alt='img' height={120} width={120} />}</div>
+
+
 
                 {/* time and tick */}
                 <div className='message-timestamp' style={isCurrentUserSender ? { float: "right" } : { float: "left" }}>
@@ -201,10 +220,12 @@ const ChatArea = ({ socket }) => {
           <div>{isTyping && <i style={{ color: "grey", fontSize: 10 }}>typing...</i>}</div>
 
           <div>
-            <AIModel /> 
+            <AIModel />
           </div>
         </div>
         {/* chat area ends */}
+
+
 
         {/* emoji starts */}
         <div>
@@ -215,7 +236,7 @@ const ChatArea = ({ socket }) => {
 
 
 
-        {/* input and send button */}
+        {/* input,emoji and send button */}
         <div className="send-message-div">
           <input value={message} onChange={(e) => {
             setNewMessage(e.target.value)
@@ -230,13 +251,22 @@ const ChatArea = ({ socket }) => {
             type="text" className="send-message-input"
             placeholder="Type a message" />
 
+          {/* select image */}
+          <label for="file">
+            <i className='fa fa-picture-o send-image-btn'></i>
+            <input type='file' id='file' style={{ display: "none" }} accept='image/jpg,image/png,image/jpeg' onChange={sendImage} />
+          </label>
+
+
+          {/* select imgage ends */}
+
           {/* emoji button opener */}
           <button className='fa fa-smile-o send-emoji-btn' onClick={() => setShowEmojiPicker(!showEmojiPicker)}></button>
           {/* emoji button  */}
 
 
           {/* send button */}
-          <button onClick={() => sendMessage()} className="fa fa-paper-plane send-message-btn" aria-hidden="true"></button>
+          <button onClick={() => sendMessage("")} className="fa fa-paper-plane send-message-btn" aria-hidden="true"></button>
         </div>
 
       </div>}

@@ -17,3 +17,12 @@ export const getAllUsers = async () => {
         return error
     }
 }
+
+export const uploadProfilePic = async (image) => {
+    try {
+        const response = await axiosInstance.post(`/api/v1/user/upload-profile-pic`,{image})
+        return response.data
+    } catch (error) {
+        return error
+    }
+}

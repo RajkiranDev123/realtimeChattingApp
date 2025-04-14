@@ -1,5 +1,12 @@
 import UserModel from "../models/user.js"
-import { cloudinary } from "../config/cloudinary.js"
+// import { cloudUpload } from "../config/cloudinary.js"
+import { v2 as cloudinary } from "cloudinary"
+
+cloudinary.config({
+    cloud_name: process.env.cloudinary_name,
+    api_key: process.env.cloudinary_api_key,
+    api_secret: process.env.cloudinary_api_secret
+})
 //////////////////////////////////////////////// getLoggedUser ///////////////////////////////////////////////
 export const getLoggedUser = async (req, res) => {
     try {
@@ -44,6 +51,7 @@ export const uploadProfilePic = async (req, res) => {
         return res.status(200).json({ message: "Profile pic uploaded Successfully!", success: true, data: user })
 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: error.message, success: false })
     }
 }
