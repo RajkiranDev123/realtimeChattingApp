@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs"
 export const getOtp = async (req, res) => {
 
     const { to } = req.body
-    console.log(to)
+    console.log("email==>",to)
 
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',

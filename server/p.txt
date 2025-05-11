@@ -1,4 +1,4 @@
-npm init -y (initialize)
+npm init -y (initialize) (package.json is created)
 npm i express
 npm install --save-dev nodemon
 npm i dotenv
