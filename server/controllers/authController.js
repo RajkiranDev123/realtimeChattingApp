@@ -1,11 +1,13 @@
-import UserModel from "../models/user.js"
+
+import UserModel from "../models/user.js" //7
+
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 //////////////////////////////////////////////// signup ///////////////////////////////////////////////
 export const signup = async (req, res) => {
     try {
         const { firstName, lastName, email, password } = req.body
-        if (!firstName || !lastName || !email || !password) {//false - go , true - stop
+        if (!firstName || !lastName || !email || !password) {
             return res.status(400).json({ message: "All fields are required!", success: false })
         }
         const user = await UserModel.findOne({ email: req.body.email })
@@ -28,15 +30,14 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body
-        console.log("em")
+    
         if (!email || !password) {
             return res.status(400).json({ message: "All fields are required!", success: false })
         }
         const user = await UserModel.findOne({ email: req.body.email })
 
-        // !null = true
         if (!user) {
-            return res.status(400).json({ message: "User does not exists!", success: false })
+            return res.status(400).json({ message: "User does not exists! Please Signup!", success: false })
         }
         const isPasswordValid = await bcrypt.compare(req.body.password, user.password)
         if (!isPasswordValid) {

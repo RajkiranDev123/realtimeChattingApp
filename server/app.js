@@ -10,17 +10,17 @@ app.use(express.json({ limit: "50mb" }))// It parses the JSON payload and attach
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        // origin : frontend address
         origin: process.env.FRONT_END_URL,
         methods: ["GET", "POST"],
         credentials: true
     }
 });
 app.use("/api/v1", routes)
-//io : event emmiter , connection : event name , event handler : socket , on : event listener
+
 
 const onlineUser = []
 
+//io : event emmiter , connection : event name , event handler : socket , on : event listener
 io.on("connection", socket => {
     // console.log("socket id ==>", socket.id)
     socket.on("join-room", userId => {
@@ -56,7 +56,8 @@ io.on("connection", socket => {
         onlineUser.splice(onlineUser.indexOf(userId), 1)
         io.emit("online-users-updated", onlineUser)
     })
-})
+
+})// io.on ends
 export default server
 
 //express app,routes,middlewares

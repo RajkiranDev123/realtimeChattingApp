@@ -8,7 +8,7 @@ mongoose.connect(process.env.DB_CONN)
 //connection state
 const db = mongoose.connection
 
-//on is event listener,db is event emitter
+//on is event listener,db is event emitter, connected is event
 
 db.on("connected", () => {
     console.log("DB Connected!")

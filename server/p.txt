@@ -1,25 +1,30 @@
-npm init -y (initialize) (package.json is created)
+
+npm init -y :==> (package.json is created and initialized)
+
 npm i express
 npm install --save-dev nodemon
 npm i dotenv
 npm i mongoose
 npm i bcryptjs
+npm install cors
 
 git init
-git add .
-git commit -m "first commit"
-git branch -M main
+git add . (add to staging area)
+
+git commit -m "first commit"  (message)
+git branch -M main (modify branch)
+
 git remote add origin https://github.com/RajkiranDev123/realtimeChattingApp.git
 git push -u origin main
 
   "type": "module",
-  "scripts": {
+  "scripts": 
+  {
     "dev": "nodemon server.js", //npm run dev
-    "start": "node server.js"   // node server.js
-  },
+    "start": "node server.js"   //npm start
+  }
 
 npm i jsonwebtoken
-npm install cors
 npm i socket.io
 npm i nodemailer
 npm i cloudinary

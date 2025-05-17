@@ -28,8 +28,6 @@ const userSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-///////////////////////////////// name of collection
+///////////////////////////////// name of collection : user
 const UserModel = mongoose.model("user", userSchema)
 export default UserModel
-
-//const userSchema = new mongoose.Schema({}) ,const UserModel = mongoose.model("user", userSchema)
