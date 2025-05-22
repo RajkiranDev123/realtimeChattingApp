@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLoggedUser, getAllUsers } from "../apiCalls/user.js"
 import { getAllChats } from "../apiCalls/chat.js"
-import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";//Provider, useSelector
 import { setUser, setAllUsers, setAllChats } from "../redux/userSlice.js";
 function ProtectedRoute({ children }) {
     const navigate = useNavigate()

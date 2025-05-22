@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link, useNavigate ,useParams} from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { verifyOtp } from "../../apiCalls/otp"
 import { toast } from "react-hot-toast"
 
@@ -12,16 +12,15 @@ import { hideLoader, showLoader } from '../../redux/loaderSlice';
 const index = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
-    const params=useParams()
-
+    const params = useParams()
     const [otp, setOtp] = useState("")
-
-
-
     const submit = async (e) => {
 
         e.preventDefault()
+        if (otp == "") {
+            toast.error("Otp is empty!")
+            return
+        }
         if (otp.length > 4 || otp.length < 4) {
             toast.error("Otp must be 4 digits!")
             return
@@ -29,10 +28,10 @@ const index = () => {
         let response = null //to access in catch block
         try {
             dispatch(showLoader())
-            response = await verifyOtp(params?.email,otp)
+            response = await verifyOtp(params?.email, otp)
 
             if (response.success) {
-           
+
                 dispatch(hideLoader())
                 toast.success(response.message)
                 navigate(`/changePassword/${params?.email}`)
@@ -47,7 +46,6 @@ const index = () => {
     }
     return (
         <div className="container">
-
             <div className="container-back-img"></div>
             <div className="container-back-color"></div>
 
@@ -60,19 +58,15 @@ const index = () => {
 
                 <div className="card_title">
                     <h1>Type your OTP!</h1>
+                    <h3>{otp}</h3>
                 </div>
 
                 {/* form starts */}
                 <div className="form">
                     <form onSubmit={submit}>
-
-
-
-
                         <input type="text"
                             onChange={(e) => { setOtp(e.target.value) }} placeholder="otp" />
                         <button>Verify OTP</button>
-
                     </form>
                 </div>
                 {/* form ends */}
@@ -81,8 +75,6 @@ const index = () => {
                         <Link to={"/login"}>Go Back to Login!</Link>
                     </span>
                 </div>
-
-
             </div>
             {/* card ends */}
 

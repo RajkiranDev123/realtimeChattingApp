@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginUser } from "../../apiCalls/auth"
 import { toast } from "react-hot-toast"
@@ -7,6 +7,7 @@ import { hideLoader, showLoader } from '../../redux/loaderSlice';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 /////////////////// login /////////////////////////
+
 const index = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -74,6 +75,7 @@ const index = () => {
 
             <input type="password" value={user.password}
               onChange={(e) => setUser({ ...user, password: e.target.value })} placeholder="Password" />
+
             <button>Login</button>
 
           </form>
@@ -85,6 +87,7 @@ const index = () => {
             <Link to={"/signup"}>Signup Here</Link>
           </span>
         </div>
+        
         <p style={{textAlign:"center"}}>
           <Link style={{color:"#8A9A5B"}} to={"/email"}>Forgot password?</Link>
         </p>

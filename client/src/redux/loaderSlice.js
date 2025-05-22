@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 //slice is a collection of action and reducers
+
 const loaderSlice = createSlice({
     name: "loader",
     initialState: {loader:false},
@@ -12,3 +13,4 @@ const loaderSlice = createSlice({
 
 export const { showLoader, hideLoader } = loaderSlice.actions
 export default loaderSlice.reducer
+

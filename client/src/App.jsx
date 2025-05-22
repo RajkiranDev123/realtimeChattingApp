@@ -7,9 +7,6 @@ import Email from "./pages/email"
 import Otp from "./pages/otp"
 import ChangePassword from "./pages/changepassword"
 import Profile from "./pages/profile"
-
-
-
 import { Toaster } from 'react-hot-toast'
 import ProtectedRoute from './components/protectedRoute'
 import Loader from './components/Loader'
@@ -20,12 +17,13 @@ function App() {
   return (
     <>
       <Toaster position='top-center' reverseOrder={false} />
+
       {loader && <Loader />}
+
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>
           <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>}></Route>
-
           <Route path='/login' element={<Login />}></Route>
           <Route path='/signup' element={<Signup />}></Route>
           <Route path='/email' element={<Email />}></Route>

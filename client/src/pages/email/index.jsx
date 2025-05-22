@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { getOtp } from "../../apiCalls/otp"
 import { toast } from "react-hot-toast"

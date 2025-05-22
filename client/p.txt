@@ -1,3 +1,4 @@
+
 npm create vite@latest
 y
 .
@@ -15,6 +16,6 @@ npm i moment --force
 
  npm i socket.io-client --force
 
-npm i emoji-picker-react
+ npm i emoji-picker-react
 
 npm install @mui/material @emotion/react @emotion/styled

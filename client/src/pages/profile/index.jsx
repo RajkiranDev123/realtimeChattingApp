@@ -28,6 +28,7 @@ const index = () => {
 
         try {
             dispatch(showLoader())
+            console.log("image upload from profile base64 ==>",image)
             const response = await uploadProfilePic(image)
             dispatch(hideLoader())
             if (response?.success) {
