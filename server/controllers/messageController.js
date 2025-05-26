@@ -6,7 +6,7 @@ import MessageModel from "../models/message.js"
 export const newMessage = async (req, res) => {
     try {
         //chatId,sender,text,read:false
-        const newMessage = await MessageModel(req.body)
+        const newMessage = new MessageModel(req.body)
         const savedMessage = await newMessage.save()
 
         //members,lastMessage,unreadMessageCount

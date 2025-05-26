@@ -22,7 +22,7 @@ export const getAllChats = async (req, res) => {
         // console.log(req.body.userId)
         const allChats = await ChatModel.find({ members: { $in: req.body.userId } }).populate("members").populate("lastMessage")
             .sort({ updatedAt: -1 })
-        // replacing a path/references like ObjectID in document with actual documents from other collections white returning result
+        // replacing  ObjectId in document with actual documents from other collections 
         return res.status(200).json({ message: "All Chats fetched Successfully!", success: true, data: allChats })
 
     } catch (error) {
@@ -44,6 +44,7 @@ export const clearUnreadMessageCountAndMessageReadTrue = async (req, res) => {
             { new: true }
         ).populate("members").populate("lastMessage")
         
+        // messages can have one chatId
         await MessageModel.updateMany(
             { chatId: chatId, read: false },
             { read: true }

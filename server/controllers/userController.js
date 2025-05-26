@@ -10,9 +10,8 @@ cloudinary.config({
 //////////////////////////////////////////////// getLoggedUser ///////////////////////////////////////////////
 export const getLoggedUser = async (req, res) => {
     try {
-
+        //req.body.userId = decodedToken.userId
         const user = await UserModel.findOne({ _id: req.body.userId }).select('-password')
-
         return res.status(200).json({ message: "Logged User fetched Successfully!", success: true, data: user })
 
     } catch (error) {
@@ -24,7 +23,6 @@ export const getLoggedUser = async (req, res) => {
 export const getAllUsers = async (req, res) => {
     try {
         // query operator : $ne is logical operator
-        //firstname,lastName,email,password,profilePic
         const allUsers = await UserModel.find({ _id: { $ne: req.body.userId } }).select('-password')
 
         return res.status(200).json({ message: "All Users except logged user fetched Successfully!", success: true, data: allUsers })

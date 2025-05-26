@@ -1,11 +1,13 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/home"
-import Login from "./pages/login"
+import Login from "./pages/login" // login is folder inside another folder pages : index.jsx and can be given any name : Login
 import Signup from "./pages/signup"
+
 import Email from "./pages/email"
 import Otp from "./pages/otp"
 import ChangePassword from "./pages/changepassword"
+
 import Profile from "./pages/profile"
 import { Toaster } from 'react-hot-toast'
 import ProtectedRoute from './components/protectedRoute'
@@ -13,7 +15,7 @@ import Loader from './components/Loader'
 import { useSelector } from "react-redux"
 
 function App() {
-  const { loader } = useSelector(state => state.loaderReducer)
+  const { loader } = useSelector(state => state.loaderReducer) //{loader:false}
   return (
     <>
       <Toaster position='top-center' reverseOrder={false} />

@@ -1,4 +1,4 @@
-import React from 'react'
+
 import "./search.css"
 const Search = ({ searchKey, setSearchKey }) => {
     return (

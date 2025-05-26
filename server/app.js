@@ -3,6 +3,7 @@ import routes from "./routes/index.js"
 import cors from "cors"
 import { createServer } from "http"
 import { Server } from "socket.io";
+
 const app = express()
 
 app.use(cors())
@@ -57,7 +58,8 @@ io.on("connection", socket => {
         io.emit("online-users-updated", onlineUser)
     })
 
-})// io.on ends
+}
+)// io.on ends
 export default server
 
 //express app,routes,middlewares

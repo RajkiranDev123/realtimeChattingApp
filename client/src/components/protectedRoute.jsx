@@ -8,13 +8,14 @@ function ProtectedRoute({ children }) {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    //get logged user
+    //get logged user : setUser
     const getLoggedUserDB = async (e) => {
         let response = null
         try {
             response = await getLoggedUser()
             if (response.success) {
                 dispatch(setUser(response?.data))
+                /////////////////action.payload//////
             } else {
                 navigate("/login")
             }
@@ -30,6 +31,7 @@ function ProtectedRoute({ children }) {
             response = await getAllUsers()
             if (response.success) {
                 dispatch(setAllUsers(response?.data))
+                //setAllUsers: (state, action) => { state.allUsers = action.payload }
             } else {
                 navigate("/login")
             }
@@ -72,3 +74,9 @@ function ProtectedRoute({ children }) {
 }
 
 export default ProtectedRoute
+
+   // const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: "6d" })
+    
+    // const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
+    //      req.body.userId = decodedToken.userId
+    //      next()

@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import "./sidebar.css"
 import Search from './Search'
 import UserList from './UserList'
+
+//////////////////////////////////// sidebar : search and userlist ///////////////////////////////////////////
 
 const Sidebar = ({ socket, onlineUser }) => {
   const [searchKey, setSearchKey] = useState("")
@@ -15,3 +17,5 @@ const Sidebar = ({ socket, onlineUser }) => {
 }
 
 export default Sidebar
+
+

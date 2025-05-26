@@ -11,7 +11,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 const index = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [user, setUser] = useState({ email: "", password: "" })
+  const [user, setUser] = useState({ email: "", password: "" }) // setUser({ ...user, password: e.target.value })
 
   const submit = async (e) => {
     e.preventDefault()
@@ -28,7 +28,7 @@ const index = () => {
         localStorage.setItem("token", response.token)
         dispatch(hideLoader())
         toast.success(response.message)
-        navigate("/")
+        navigate("/") //go to home
       } else {
         toast.error(response.message)
         dispatch(hideLoader())

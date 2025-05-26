@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import "./home.css"
 import Header from "../../components/Header.jsx"
 import Sidebar from '../../components/Sidebar.jsx'
@@ -9,11 +9,11 @@ import io from "socket.io-client"
 ////////////////// home /////////////////////////////////////////////////
 
 //make it global
-const socket = io.connect("http://localhost:3001")//backend server address
+const socket = io.connect(import.meta.env.VITE_BASE_URL)//backend server address
 
 const index = () => {
-  const { selectedChat, user } = useSelector(state => state.userReducer)
-  const [ onlineUser, setOnlineUser ] = useState([])
+  const { selectedChat, user } = useSelector(state => state.userReducer) //dont show ChatArea when selectedChat is  null
+  const [onlineUser, setOnlineUser] = useState([])
 
   useEffect(() => {
     if (user) {
@@ -32,7 +32,7 @@ const index = () => {
     }
   }, [user])
   return (
-    <div style={{background:"#C0C0C0"}} className="home-page">
+    <div style={{ background: "#C0C0C0" }} className="home-page">
 
       <Header socket={socket} />
 
