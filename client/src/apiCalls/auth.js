@@ -20,3 +20,4 @@ export const loginUser = async (user) => {
         return error.response.data
     }
 }
+

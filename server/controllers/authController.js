@@ -30,7 +30,7 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body
-    
+
         if (!email || !password) {
             return res.status(400).json({ message: "All fields are required!", success: false })
         }
@@ -45,9 +45,42 @@ export const login = async (req, res) => {
         }
         // const payload = { userId: user._id }
         const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: "6d" })
-        return res.status(200).json({ message: "User logged-in Successfully!", success: true, token: token })
+        const rToken = jwt.sign({ userId: user._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "9d" })
+
+        return res.status(200).json({ message: "User logged-in Successfully!", success: true, token: token, rToken: rToken })
 
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false })
     }
+}
+
+export const refreshAccessToken = async (req, res) => {
+    const incomingRefreshToken = req.headers.refreshToken
+
+    if (!incomingRefreshToken) {
+        return res.status(400).json({ message: "No rt!", success: false })
+
+    }
+
+    try {
+        const decodedToken = jwt.verify(
+            incomingRefreshToken,
+            process.env.REFRESH_TOKEN_SECRET
+        )
+
+        const user = await UserModel.findById(decodedToken?.userId)
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid rt!", success: false })
+        }
+
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: "6d" })
+        const rToken = jwt.sign({ userId: user._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "9d" })
+
+        return res.status(200).json({ message: "New access and refresh token sent!", success: true, token: token, rToken: rToken })
+    } catch (error) {
+        return res.status(500).json({ message: error.message, success: false })
+
+    }
+
 }

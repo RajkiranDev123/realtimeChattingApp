@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import "./userlist.css"
-import { useDispatch, useSelector, Provider } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { createNewChat } from "../apiCalls/chat"
 import { setAllChats, setSelectedChat } from "../redux/userSlice"
 import { showLoader, hideLoader } from "../redux/loaderSlice"
@@ -14,9 +14,7 @@ const UserList = ({ searchKey, socket, onlineUser }) => {
     const { allUsers, allChats, user: currentUser, selectedChat } = useSelector(state => state.userReducer)
     const dispatch = useDispatch()
 
-
-
-    const openChat = (selectedUserId) => {//openchatArea
+    const openChat = (selectedUserId) => {//openchatArea :==>
         //members, unreadMessageCount , lastMessage
         const chat = allChats.find(chat =>
             chat?.members?.map(m => m?._id).includes(currentUser?._id) &&
@@ -89,7 +87,7 @@ const UserList = ({ searchKey, socket, onlineUser }) => {
 
     const getData = () => {
         if (searchKey == "") {
-            // chats that have logged user in members :[{_id:logged-user,},{}],lastMessage,unreadMessageCount
+            // chats that have logged user in chats collection in members :[{_id:logged-user,},{}],lastMessage,unreadMessageCount
             return allChats
         } else {
             //////// allUsers except logged user
@@ -108,21 +106,25 @@ const UserList = ({ searchKey, socket, onlineUser }) => {
         socket.on("receive-message", message => {
             const selectedChat = store.getState().userReducer.selectedChat
             const allChats = store.getState().userReducer.allChats
+
             if (selectedChat?._id !== message?.chatId) {
+
                 const updatedChats = allChats.map(chat => {
+
                     if (chat?._id == message?.chatId) {
                         return {
                             ...chat,
                             unreadMessageCount: (chat?.unreadMessageCount || 0) + 1,
                             lastMessage: message
                         }
-                    }
+                    }// inner if ends
                     return chat
-                })
-                dispatch(setAllChats(updatedChats))
-            }
+                })// map ends
 
+                dispatch(setAllChats(updatedChats))
+            }//if ends
         })
+
     }, [])
 
 
@@ -138,28 +140,32 @@ const UserList = ({ searchKey, socket, onlineUser }) => {
                 <div className={isSelectedChat(user) ? "selected-user" : "filtered-user"}>
 
                     <div className="filter-user-display">
+
                         {/* profile pic */}
-                        {user?.profilePic && <img src={user?.profilePic} style={{ border: onlineUser?.includes(user?._id) ? "2px solid green" : "" }} alt="Profile Pic" className="user-profile-image" />}
+                        {user?.profilePic && <img src={user?.profilePic} style={{ border: onlineUser?.includes(user?._id) ? "2px solid green" : "" }}
+                            alt="Profile Pic" className="user-profile-image" />}
+
                         {/*or short name */}
                         {!user?.profilePic &&
-                            <div className={isSelectedChat(user) ? "user-selected-avatar" : "user-default-avatar"} style={{ border: onlineUser?.includes(user?._id) ? "3px solid green" : "" }}>
+                            <div className={isSelectedChat(user) ? "user-selected-avatar" : "user-default-avatar"}
+                                style={{ border: onlineUser?.includes(user?._id) ? "3px solid green" : "" }}>
                                 {user?.firstName[0]?.toUpperCase() + " " + user?.lastName[0]?.toUpperCase()}
                             </div>}
-                        {/* full name and lastMessage or email */}
+
+                        {/* full name and (lastMessage or email) */}
                         <div className="filter-user-details">
                             <div className="user-display-name">  {formatName(user)}</div>
                             <div className="user-display-email">{getLastMessage(user?._id) || user?.email}</div>
                         </div>
 
-                        {/* count and time*/}
+                        {/* getUnreadMessageCount and time*/}
                         <div>
                             <div style={{ color: "white", }}>{getUnreadMessageCount(user?._id)}</div>
                             <div className='timestamp' style={{ color: "white" }}>{getLastMessageTimeStamp(user?._id)}</div>
-
                         </div>
 
 
-                        {/* start chat button ,       collect _id's */}
+                        {/* start chat button */}
                         {!allChats.find(chat => chat?.members.map(m => m?._id).includes(user?._id)) && <div className="user-start-chat">
                             <button onClick={() => createChat(user?._id)} className="user-start-chat-btn">Start Chat</button>
                         </div>}
