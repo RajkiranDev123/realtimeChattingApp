@@ -73,7 +73,7 @@ const UserList = ({ searchKey, socket, onlineUser }) => {
             if (response.success) {
                 toast.success(response.message)
                 const newChat = response.data
-                const updatedChat = [...allChats, newChat]
+                const updatedChat = [...allChats, newChat]// add new chat not replace
                 dispatch(setAllChats(updatedChat))
                 dispatch(setSelectedChat(newChat))
                 //Components connected to Redux via useSelector will only re-render when
