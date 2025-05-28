@@ -26,6 +26,8 @@ const index = () => {
 
       if (response.success) {
         localStorage.setItem("token", response.token)
+        localStorage.setItem("refreshToken", response.rToken)
+
         dispatch(hideLoader())
         toast.success(response.message)
         navigate("/") //go to home

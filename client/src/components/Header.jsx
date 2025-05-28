@@ -11,6 +11,8 @@ const Header = () => {
   // console.log(user)
   const logout = () => {
     localStorage.removeItem("token")
+    localStorage.removeItem("refreshToken")
+
     socket.emit("user-offline", user?._id)
     navigate("/login")
 
