@@ -55,7 +55,7 @@ export const login = async (req, res) => {
 }
 
 export const refreshAccessToken = async (req, res) => {
-    const incomingRefreshToken = req.headers.refreshToken
+    const incomingRefreshToken = req.body.refreshToken
 
     if (!incomingRefreshToken) {
         return res.status(400).json({ message: "No rt!", success: false })
