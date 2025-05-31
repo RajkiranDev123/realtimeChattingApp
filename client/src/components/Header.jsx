@@ -5,7 +5,7 @@ import { formatName } from "../utils/formatName.js"
 import { useNavigate } from 'react-router-dom'
 
 
-const Header = () => {
+const Header = ({socket}) => {
   const { user } = useSelector(state => state.userReducer)
   const navigate = useNavigate()
   // console.log(user)
@@ -38,7 +38,7 @@ const Header = () => {
           className="logged-user-profile-pic">{user?.firstName[0] + " " + user?.lastName[0]}
         </div>}
 
-        <i style={{ cursor: "pointer", color: "red", marginTop: 10 }} onClick={logout} className='fa fa-power-off'></i>
+        <i style={{ cursor: "pointer", color: "red", marginTop: 10 }} onClick={()=>logout()} className='fa fa-power-off'></i>
 
 
       </div>

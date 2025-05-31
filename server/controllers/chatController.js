@@ -44,7 +44,7 @@ export const clearUnreadMessageCountAndMessageReadTrue = async (req, res) => {
             { new: true }
         ).populate("members").populate("lastMessage")
         
-        // messages can have one chatId
+        //multiple messages have one chatId
         await MessageModel.updateMany(
             { chatId: chatId, read: false },
             { read: true }

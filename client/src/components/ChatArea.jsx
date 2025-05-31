@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createNewMessage, getAllMessages } from '../apiCalls/message'
 import { clearUnreadMessageCountAndMessageReadTrue } from '../apiCalls/chat'
 
@@ -15,7 +15,9 @@ import { formatTime } from '../utils/formatTime'
 import { setAllChats } from '../redux/userSlice.js'
 import EmojiPicker from "emoji-picker-react"
 import AIModel from "../components/AIModal.jsx"
+
 const ChatArea = ({ socket }) => {
+
   const dispatch = useDispatch()
   const { selectedChat, user, allChats } = useSelector(state => state.userReducer)
 
@@ -23,15 +25,13 @@ const ChatArea = ({ socket }) => {
 
   const [message, setNewMessage] = useState("")
   const [allMessages, setAllMessages] = useState([])
+
   const [isTyping, setIsTyping] = useState(false)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 
-
-
-
-
+  // send message
   const sendMessage = async (image) => {
-    console.log(77)
+
     let response = null
     try {
       const newMessage = {
@@ -65,9 +65,8 @@ const ChatArea = ({ socket }) => {
 
   // sendImage
   const sendImage = async (e) => {
-    console.log(9)
     const file = e.target.files[0]
-    console.log(file)
+
     const reader = new FileReader(file)
     reader.readAsDataURL(file)
     reader.onloadend = async () => {
@@ -155,7 +154,7 @@ const ChatArea = ({ socket }) => {
           }
           return chat
         })
-        dispatch(setAllChats(updatedChats))
+        dispatch(setAllChats(updatedChats))//allChats will render on UserList Component too!
       }
       //update read to true in all Messages
       setAllMessages(prevMsgs => {
@@ -163,7 +162,8 @@ const ChatArea = ({ socket }) => {
           return { ...msg, read: true }
         })
       })
-    })//message count cleared
+      
+    })//message count cleared ends!
 
     //listen to started-typing
     socket.on("started-typing", data => {
@@ -175,12 +175,14 @@ const ChatArea = ({ socket }) => {
       }
     })
 
-  }, [selectedChat])
+  }, [selectedChat])//when selectedchat changes 
 
+  //second useEffect
   useEffect(() => {
     const msgContainer = document.getElementById("main-chat-area")
     msgContainer.scrollTop = msgContainer.scrollHeight
   }, [allMessages, isTyping, showEmojiPicker])
+
   return (
     <>
       {selectedChat && <div className="app-chat-area">
@@ -189,19 +191,22 @@ const ChatArea = ({ socket }) => {
         <div className="app-chat-area-header">
           {formatName(selectedUser)}
         </div>
+        {/* header ends */}
+
+
 
         {/* chat area */}
         <div className="main-chat-area" id="main-chat-area">
+
           {allMessages?.map(msg => {
             const isCurrentUserSender = msg?.sender === user?._id
+
             return <div className="message-container" style={isCurrentUserSender ? { justifyContent: "end" } : { justifyContent: "start" }}>
               {/* 3rd div starts */}
               <div>
                 {/* text */}
                 {msg?.text && <div className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>}
                 <div >{msg?.image && <img src={msg?.image} alt='img' height={120} width={120} />}</div>
-
-
 
                 {/* time and tick */}
                 <div className='message-timestamp' style={isCurrentUserSender ? { float: "right" } : { float: "left" }}>
@@ -210,15 +215,16 @@ const ChatArea = ({ socket }) => {
                 </div>
                 {/* time and tick */}
 
-
               </div>
               {/* 3rd div ends*/}
 
-            </div>
+            </div>//message-container ends
           })}
 
+          {/* typing indicator */}
           <div>{isTyping && <i style={{ color: "grey", fontSize: 10 }}>typing...</i>}</div>
 
+          {/* ai  */}
           <div>
             <AIModel />
           </div>
@@ -227,17 +233,19 @@ const ChatArea = ({ socket }) => {
 
 
 
-        {/* emoji starts */}
+        {/* emoji picker starts */}
         <div>
           {showEmojiPicker && <EmojiPicker style={{ height: 350, width: 300 }} onEmojiClick={(e) => setNewMessage(message + e.emoji)}></EmojiPicker>}
         </div>
-        {/* emoji starts */}
+        {/* emoji picker ends */}
 
 
 
 
-        {/* input,emoji and send button */}
+        {/* input,image,emoji and send button */}
         <div className="send-message-div">
+
+          {/* input text */}
           <input value={message} onChange={(e) => {
             setNewMessage(e.target.value)
             socket.emit("user-typing", {
@@ -250,23 +258,23 @@ const ChatArea = ({ socket }) => {
           }
             type="text" className="send-message-input"
             placeholder="Type a message" />
+          {/* input text ends */}
 
           {/* select image */}
           <label for="file">
             <i className='fa fa-picture-o send-image-btn'></i>
             <input type='file' id='file' style={{ display: "none" }} accept='image/jpg,image/png,image/jpeg' onChange={sendImage} />
           </label>
-
-
-          {/* select imgage ends */}
+          {/* select image ends */}
 
           {/* emoji button opener */}
           <button className='fa fa-smile-o send-emoji-btn' onClick={() => setShowEmojiPicker(!showEmojiPicker)}></button>
-          {/* emoji button  */}
+          {/* emoji button opener ends*/}
 
 
           {/* send button */}
           <button onClick={() => sendMessage("")} className="fa fa-paper-plane send-message-btn" aria-hidden="true"></button>
+          {/* send button ends */}
         </div>
 
       </div>}

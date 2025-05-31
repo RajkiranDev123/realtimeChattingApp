@@ -105,7 +105,7 @@ const UserList = ({ searchKey, socket, onlineUser }) => {
         //update unreadMessageCount for other users/friends
         socket.on("receive-message", message => {
             const selectedChat = store.getState().userReducer.selectedChat
-            const allChats = store.getState().userReducer.allChats
+            let allChats = store.getState().userReducer.allChats
 
             if (selectedChat?._id !== message?.chatId) {
 
@@ -120,9 +120,17 @@ const UserList = ({ searchKey, socket, onlineUser }) => {
                     }// inner if ends
                     return chat
                 })// map ends
-
-                dispatch(setAllChats(updatedChats))
+                allChats = updatedChats
+                // dispatch(setAllChats(updatedChats))
             }//if ends
+
+            //put latest chat on top
+            const latestChat = allChats.find(chat => chat?._id == message?._id)
+
+            const otherChats = allChats.filter(chat => chat?._id !== message?._id)
+            allChats = [latestChat, ...otherChats]
+            dispatch(setAllChats(allChats))
+
         })
 
     }, [])
