@@ -17,6 +17,7 @@
     "axios": "^1.8.1",
     "emoji-picker-react": "^4.12.2",
     "moment": "^2.30.1",
+    "openai": "^5.0.2",
     "react": "^19.0.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^19.0.0",

@@ -68,7 +68,7 @@ export default function AIModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <p onClick={() => handleClose()} style={{ color: "grey", display: "flex", justifyContent: "flex-end", cursor: "pointer" }}>x</p>
+          <p onClick={() => handleClose()} style={{ color: "red",fontWeight:"bold", display: "flex", justifyContent: "flex-end", cursor: "pointer" }}>x</p>
 
           <div>
             <div style={{ overflowY: "scroll", height: 290,color:"grey",fontStyle:"italic" }}>

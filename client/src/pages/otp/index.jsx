@@ -14,6 +14,7 @@ const index = () => {
     const dispatch = useDispatch()
     const params = useParams()
     const [otp, setOtp] = useState("")
+
     const submit = async (e) => {
 
         e.preventDefault()
@@ -44,6 +45,7 @@ const index = () => {
             toast.error(response.message)
         }
     }
+
     return (
         <div className="container">
             <div className="container-back-img"></div>

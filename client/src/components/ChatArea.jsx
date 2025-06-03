@@ -15,6 +15,7 @@ import { formatTime } from '../utils/formatTime'
 import { setAllChats } from '../redux/userSlice.js'
 import EmojiPicker from "emoji-picker-react"
 import AIModel from "../components/AIModal.jsx"
+import ImgModal from './ImgModal.jsx'
 
 const ChatArea = ({ socket }) => {
 
@@ -162,7 +163,7 @@ const ChatArea = ({ socket }) => {
           return { ...msg, read: true }
         })
       })
-      
+
     })//message count cleared ends!
 
     //listen to started-typing
@@ -225,9 +226,19 @@ const ChatArea = ({ socket }) => {
           <div>{isTyping && <i style={{ color: "grey", fontSize: 10 }}>typing...</i>}</div>
 
           {/* ai  */}
-          <div>
-            <AIModel />
+          <div style={{ display: "flex", gap: 2 }}>
+            {/* talk */}
+            <div>
+              <AIModel />
+            </div>
+            {/* gen image */}
+            {/* <div>
+              <ImgModal />
+            </div> */}
           </div>
+
+
+          {/* gen img ends */}
         </div>
         {/* chat area ends */}
 
