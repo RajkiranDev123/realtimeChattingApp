@@ -232,9 +232,9 @@ const ChatArea = ({ socket }) => {
               <AIModel />
             </div>
             {/* gen image */}
-            {/* <div>
+            <div>
               <ImgModal />
-            </div> */}
+            </div>
           </div>
 
 

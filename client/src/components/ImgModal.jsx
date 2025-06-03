@@ -1,9 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 
+import Modal from '@mui/material/Modal';
+//
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import useClipboard from "react-use-clipboard";
+import { useState, useEffect } from "react";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -21,52 +23,37 @@ const style = {
 
 export default function ImgModal() {
     const [open, setOpen] = React.useState(false);
-    const [wait, setWait] = React.useState(false);
+       //
+    const [textToCopy, setTextToCopy] = useState("");
+    const [isCopied, setCopied] = useClipboard(textToCopy, {
+        successDuration: 1000
+    });
 
-    const [question, setQuestion] = React.useState("");
-    const [ans, setAns] = React.useState("");
+    const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
+    const { transcript,resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+  
 
-
-
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => { setOpen(false); setQuestion(""); setWait(false); setAns("") };
-
- 
-
-    async function query(data) {
-      let  data1 = {
-           response_format: "b64_json",
-    prompt: "\"Astronaut riding a horse\"",
-    model: "stabilityai/stable-diffusion-xl-base-1.0",
-        }
-        const response = await fetch(
-            "https://router.huggingface.co/together/v1/images/generations",
-            {
-                headers: {
-                    Authorization: "Bearer ",
-                    "Content-Type": "application/json",
-                },
-                method: "POST",
-                body: JSON.stringify(
-                    data1
-
-                ),
-            }
-        );
-        const result = await response.blob();
-        // return result;
-        console.log(88, result)
-
+    if (!browserSupportsSpeechRecognition) {
+        return null
     }
 
 
 
 
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => { setOpen(false) ;SpeechRecognition.stopListening();setTextToCopy("");resetTranscript()};
 
+
+ 
+
+    useEffect(() => {
+        setTextToCopy(transcript)
+    }, [transcript])
 
     return (
         <div>
-            <button style={{ borderRadius: 3, cursor: "pointer", padding: 3, background: "blue", border: "none", color: "white", margin: 1 }} onClick={handleOpen}>Generate Image 🧠</button>
+            <button style={{ borderRadius: 3, cursor: "pointer", padding: 3, background: "blue", border: "none", color: "white", margin: 1 }}
+             onClick={handleOpen}>▶ Speech to Text ✍︎</button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -74,25 +61,36 @@ export default function ImgModal() {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <p onClick={() => handleClose()} style={{ color: "grey", display: "flex", justifyContent: "flex-end", cursor: "pointer" }}>x</p>
+                    <p onClick={() => handleClose()} style={{ color: "red", display: "flex", justifyContent: "flex-end", cursor: "pointer" }}>x</p>
 
-                    <div>
-                        <div style={{ overflowY: "scroll", height: 290, color: "grey", fontStyle: "italic" }}>
-                            {wait && <p style={{ color: "grey" }}>Plz Wait...</p>}
-                            {ans}
+
+                    <div className="">
+                        <h4 style={{ textAlign: "center" }}>Speech to Text Converter</h4>
+                        <br />
+                        <h5 style={{color:"blue",textAlign:"center"}}>Talk with me!</h5>
+
+                        <div style={{ background: "white", height: 200 }}>
+                            {textToCopy}
+                        </div>
+                        <br />
+                        <div style={{ display: "flex", gap: 9 }}>
+
+                            <button onClick={setCopied} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer"}}>
+                                {isCopied ? 'Copied!' : 'Copy'}
+                            </button>
+                            <button onClick={startListening} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer"}} >Start Listening</button>
+                            <button onClick={SpeechRecognition.stopListening} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer"}} >Stop Listening</button>
+                            <button onClick={() => { resetTranscript(); setTextToCopy("") }} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer"}}>Clear</button>
+
 
                         </div>
-
-                        <input placeholder='type your question...' style={{ height: 30, width: "95%", borderRadius: 3, padding: 2, outline: "none", border: "none" }} value={question} type='text' onChange={(e) => setQuestion(e.target.value)} />
-                        <div style={{ display: "flex", gap: 3, margin: 2 }}>
-                            <button style={{ border: "none", padding: 2, cursor: "pointer", background: "red", color: "white", borderTopRightRadius: 7 }} onClick={query}>Generate</button>
-                            <button style={{ border: "none", padding: 2, cursor: "pointer", background: "blue", color: "white", borderTopLeftRadius: 7 }} onClick={() => setQuestion("")}>Clear Question</button>
-                            <button style={{ border: "none", padding: 2, cursor: "pointer", background: "blue", color: "white", borderRadius: 2 }} onClick={() => setAns("")}>Clear Msg</button>
-                        </div>
-
-
 
                     </div>
+
+
+
+
+
                 </Box>
             </Modal>
         </div>
