@@ -31,7 +31,7 @@ export default function ImgModal() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => { setOpen(false); setQuestion(""); setWait(false); setAns("") };
 
-    //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
+ 
 
     async function query(data) {
       let  data1 = {
@@ -43,7 +43,7 @@ export default function ImgModal() {
             "https://router.huggingface.co/together/v1/images/generations",
             {
                 headers: {
-                    Authorization: "Bearer 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",
+                    Authorization: "Bearer ",
                     "Content-Type": "application/json",
                 },
                 method: "POST",

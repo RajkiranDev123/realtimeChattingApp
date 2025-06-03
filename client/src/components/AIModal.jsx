@@ -31,7 +31,7 @@ export default function AIModal() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => { setOpen(false); setQuestion(""); setWait(false); setAns("") };
 
-  //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
+ 
 
   function ask() {
     setWait(true)
