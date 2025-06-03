@@ -38,7 +38,7 @@ export default function AIModal() {
     let res = fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer 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",
+        // "Authorization": "Bearer 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",
         "HTTP-Referer": "https://www.webstylepress.com", // Optional. Site URL for rankings on openrouter.ai.
         "X-Title": "WebStylePress", // Optional. Site title for rankings on openrouter.ai.
         "Content-Type": "application/json"
