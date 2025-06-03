@@ -53,7 +53,7 @@ export default function ImgModal() {
     return (
         <div>
             <button style={{ borderRadius: 3, cursor: "pointer", padding: 3, background: "blue", border: "none", color: "white", margin: 1 }}
-             onClick={handleOpen}>▶ Speech to Text ✍︎</button>
+             onClick={handleOpen}>▶ Speech to Text </button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -73,14 +73,15 @@ export default function ImgModal() {
                             {textToCopy}
                         </div>
                         <br />
-                        <div style={{ display: "flex", gap: 9 }}>
+                        <div style={{ textAlign:"center"}}>
 
-                            <button onClick={setCopied} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer"}}>
+                            <button onClick={setCopied} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer",marginRight:4,background:"white"}}>
                                 {isCopied ? 'Copied!' : 'Copy'}
                             </button>
-                            <button onClick={startListening} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer"}} >Start Listening</button>
-                            <button onClick={SpeechRecognition.stopListening} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer"}} >Stop Listening</button>
-                            <button onClick={() => { resetTranscript(); setTextToCopy("") }} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer"}}>Clear</button>
+                            <button onClick={startListening} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer",marginRight:4}} >Start Listening</button>
+                            <button onClick={SpeechRecognition.stopListening} style={{padding:2,borderRadius:3,border:"none",cursor:"pointer",marginRight:4,background:"red",color:"white"}} >Stop Listening</button>
+                            <button onClick={() => { resetTranscript(); setTextToCopy("") }} 
+                            style={{padding:2,borderRadius:3,border:"none",cursor:"pointer",marginRight:4,color:"wheat",background:"green"}}>Clear</button>
 
 
                         </div>
