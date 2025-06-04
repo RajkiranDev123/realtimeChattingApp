@@ -90,7 +90,7 @@
   line-height: 50px;
 }
 
-
+/* 
 @media only screen and (max-width: 1000px) {
   .filter-user-details {
     display: none;
@@ -110,9 +110,9 @@
   .timestamp{
     display: none;
   }
-}
+} */
 
-@media only screen and (max-width: 1000px) {
+/* @media only screen and (max-width: 1000px) {
   .user-default-avatar {
     font-size: 10px;
     border-radius: 5px;
@@ -125,4 +125,4 @@
 
   }
 
-}
+} */

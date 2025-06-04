@@ -268,7 +268,7 @@ const ChatArea = ({ socket }) => {
           }
           }
             type="text" className="send-message-input"
-            placeholder="Type a message" />
+            placeholder="Type..." />
           {/* input text ends */}
 
           {/* select image */}

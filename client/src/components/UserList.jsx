@@ -9,7 +9,7 @@ import moment from "moment"
 import { formatName } from "../utils/formatName.js"
 import store from '../redux/store.js'
 
-const UserList = ({ searchKey, socket, onlineUser }) => {
+const UserList = ({ searchKey, socket, onlineUser,handleClose }) => {
     //allChats: chats that contains current user in members
     const { allUsers, allChats, user: currentUser, selectedChat } = useSelector(state => state.userReducer)
     const dispatch = useDispatch()
@@ -22,6 +22,7 @@ const UserList = ({ searchKey, socket, onlineUser }) => {
         )
         if (chat) {
             dispatch(setSelectedChat(chat))
+            handleClose()
         }
     }
 
