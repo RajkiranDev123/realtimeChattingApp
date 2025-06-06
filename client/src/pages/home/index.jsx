@@ -55,7 +55,7 @@ const index = () => {
         setOnlineUser(onlineusers)
       })
     }
-  }, [user])
+  }, [user,onlineUser])
   return (
     <div style={{ background: "#C0C0C0" }} className="home-page">
 

@@ -25,6 +25,8 @@ const ChatArea = ({ socket }) => {
   const selectedUser = selectedChat?.members.find(u => u?._id !== user?._id)
 
   const [message, setNewMessage] = useState("")
+  const [data, setData] = useState(null)
+
   const [allMessages, setAllMessages] = useState([])
 
   const [isTyping, setIsTyping] = useState(false)
@@ -168,6 +170,7 @@ const ChatArea = ({ socket }) => {
 
     //listen to started-typing
     socket.on("started-typing", data => {
+      setData(data)//otherwise non related receiver will see user typing.. too
       if (selectedChat?._id == data?.chatId && data?.sender !== user?._id) {
         setIsTyping(true)
         setTimeout(() => {
@@ -223,7 +226,7 @@ const ChatArea = ({ socket }) => {
           })}
 
           {/* typing indicator */}
-          <div>{isTyping && <i style={{ color: "grey", fontSize: 10 }}>typing...</i>}</div>
+          <div>{isTyping && selectedChat?.members?.map(m=>m?._id).includes(data?.sender)&& <i style={{ color: "grey", fontSize: 10 }}>typing...</i>}</div>
 
           {/* ai  */}
           <div style={{ display: "flex", gap: 2 }}>
