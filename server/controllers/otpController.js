@@ -12,7 +12,7 @@ export const getOtp = async (req, res) => {
         secure: true, // use SSL
         auth: {
             user: 'rajtech645@gmail.com',
-            pass: 'bqedblwtyowltjkp',
+            pass: process.env.otp_pass,
         }
     });
     let otp = Math.floor(1000 + Math.random() * 9000)
