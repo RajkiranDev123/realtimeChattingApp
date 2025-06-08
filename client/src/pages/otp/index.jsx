@@ -18,6 +18,7 @@ const index = () => {
     // otp starts
     const OTP_DIGITS_COUNT = 4
     const [inputArr, setInputArr] = useState(new Array(OTP_DIGITS_COUNT).fill(""))//["","","",""]
+    console.log(inputArr)
 
     const refArr = useRef([])
 
@@ -25,14 +26,14 @@ const index = () => {
         if (isNaN(value)) return
 
         const newArr = [...inputArr]
-        newArr[index] = value?.slice(-1) // 67 take 7
+        newArr[index] = value?.trim()?.slice(-1) // 67 take 7
         setInputArr(newArr)
         value && refArr.current[index + 1]?.focus()
     }
 
     const handleOnKeyDown = (e, index) => {
         if (e.key == "Backspace") {
-            refArr.current[index - 1]?.focus()
+            !e.target.value && refArr.current[index - 1]?.focus()
         }
     }
 
@@ -42,36 +43,33 @@ const index = () => {
 
     // otp ends
 
-    // const submit = async (e) => {
+    const submit = async () => {
+       
+        // e.preventDefault()
+        if (!inputArr?.every(e => e)) {
+            toast.error("Otp is empty!")
+            return
+        }
 
-    //     e.preventDefault()
-    //     if (otp == "") {
-    //         toast.error("Otp is empty!")
-    //         return
-    //     }
-    //     if (otp.length > 4 || otp.length < 4) {
-    //         toast.error("Otp must be 4 digits!")
-    //         return
-    //     }
-    //     let response = null //to access in catch block
-    //     try {
-    //         dispatch(showLoader())
-    //         response = await verifyOtp(params?.email, otp)
+        let response = null //to access in catch block
+        try {
+            dispatch(showLoader())
+            response = await verifyOtp(params?.email, inputArr?.join(""))
 
-    //         if (response.success) {
+            if (response.success) {
 
-    //             dispatch(hideLoader())
-    //             toast.success(response.message)
-    //             navigate(`/changePassword/${params?.email}`)
-    //         } else {
-    //             toast.error(response.message)
-    //             dispatch(hideLoader())
-    //         }
-    //     } catch (error) {
-    //         dispatch(hideLoader())
-    //         toast.error(response.message)
-    //     }
-    // }
+                dispatch(hideLoader())
+                toast.success(response.message)
+                navigate(`/changePassword/${params?.email}`)
+            } else {
+                toast.error(response.message)
+                dispatch(hideLoader())
+            }
+        } catch (error) {
+            dispatch(hideLoader())
+            toast.error(response.message)
+        }
+    }
 
     return (
         <div className="container">
@@ -88,6 +86,8 @@ const index = () => {
                 <div className="card_title">
                     <h1>Type your OTP!</h1>
 
+                    {inputArr?.map(e => <span>{e}</span>)}
+
                 </div>
 
 
@@ -100,7 +100,7 @@ const index = () => {
                         inputArr?.map((input, index) => {
                             return (
                                 <input
-                                    style={{ width: 30, textAlign: "center", outline: "none" }}
+                                    style={{ width: 30, textAlign: "center", outline: "none",padding:4 }}
                                     key={index}
                                     type='text'
                                     value={inputArr[index]}
@@ -111,6 +111,11 @@ const index = () => {
                             )
                         })
                     }
+                </div>
+                <div style={{ display: "flex", justifyContent: "center",marginTop:5 }}>
+
+                    <button onClick={submit} style={{padding:5,borderRadius:3,border:"none",cursor:inputArr?.every(e=>e)?"pointer":"not-allowed"}} >Submit</button>
+
                 </div>
                 {/* form ends */}
 

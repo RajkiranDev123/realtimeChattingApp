@@ -22,7 +22,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 ////////////////// home /////////////////////////////////////////////////
 
 //make it global
-const socket = io.connect(import.meta.env.VITE_BASE_URL)//backend server address
+const socket = io.connect(import.meta.env.VITE_BASE_URL)
+//backend server address
 
 const index = () => {
   const { selectedChat, user } = useSelector(state => state.userReducer) //dont show ChatArea when selectedChat is  null
