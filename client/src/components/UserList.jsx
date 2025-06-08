@@ -105,7 +105,7 @@ const UserList = ({ searchKey, socket, onlineUser,handleClose }) => {
     useEffect(() => {
         //update unreadMessageCount for other users/friends
         // socket.on("receive-message", message => {
-      socket.off("set-message-count").socket.on("set-message-count", message => {
+      socket?.off("set-message-count").socket?.on("set-message-count", message => {
 
             const selectedChat = store.getState().userReducer.selectedChat
             let allChats = store.getState().userReducer.allChats
