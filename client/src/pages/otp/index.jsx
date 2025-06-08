@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { verifyOtp } from "../../apiCalls/otp"
 import { toast } from "react-hot-toast"
@@ -13,38 +13,65 @@ const index = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const params = useParams()
-    const [otp, setOtp] = useState("")
+    // const [otp, setOtp] = useState("")
 
-    const submit = async (e) => {
+    // otp starts
+    const OTP_DIGITS_COUNT = 4
+    const [inputArr, setInputArr] = useState(new Array(OTP_DIGITS_COUNT).fill(""))//["","","",""]
 
-        e.preventDefault()
-        if (otp == "") {
-            toast.error("Otp is empty!")
-            return
-        }
-        if (otp.length > 4 || otp.length < 4) {
-            toast.error("Otp must be 4 digits!")
-            return
-        }
-        let response = null //to access in catch block
-        try {
-            dispatch(showLoader())
-            response = await verifyOtp(params?.email, otp)
+    const refArr = useRef([])
 
-            if (response.success) {
+    const handleOnChange = (value, index) => {
+        if (isNaN(value)) return
 
-                dispatch(hideLoader())
-                toast.success(response.message)
-                navigate(`/changePassword/${params?.email}`)
-            } else {
-                toast.error(response.message)
-                dispatch(hideLoader())
-            }
-        } catch (error) {
-            dispatch(hideLoader())
-            toast.error(response.message)
+        const newArr = [...inputArr]
+        newArr[index] = value?.slice(-1) // 67 take 7
+        setInputArr(newArr)
+        value && refArr.current[index + 1]?.focus()
+    }
+
+    const handleOnKeyDown = (e, index) => {
+        if (e.key == "Backspace") {
+            refArr.current[index - 1]?.focus()
         }
     }
+
+    useEffect(() => {
+        refArr.current[0]?.focus()
+    }, [])
+
+    // otp ends
+
+    // const submit = async (e) => {
+
+    //     e.preventDefault()
+    //     if (otp == "") {
+    //         toast.error("Otp is empty!")
+    //         return
+    //     }
+    //     if (otp.length > 4 || otp.length < 4) {
+    //         toast.error("Otp must be 4 digits!")
+    //         return
+    //     }
+    //     let response = null //to access in catch block
+    //     try {
+    //         dispatch(showLoader())
+    //         response = await verifyOtp(params?.email, otp)
+
+    //         if (response.success) {
+
+    //             dispatch(hideLoader())
+    //             toast.success(response.message)
+    //             navigate(`/changePassword/${params?.email}`)
+    //         } else {
+    //             toast.error(response.message)
+    //             dispatch(hideLoader())
+    //         }
+    //     } catch (error) {
+    //         dispatch(hideLoader())
+    //         toast.error(response.message)
+    //     }
+    // }
 
     return (
         <div className="container">
@@ -60,18 +87,36 @@ const index = () => {
 
                 <div className="card_title">
                     <h1>Type your OTP!</h1>
-                    <h3>{otp}</h3>
+
                 </div>
 
+
+
+
+
                 {/* form starts */}
-                <div className="form">
-                    <form onSubmit={submit}>
-                        <input type="text"
-                            onChange={(e) => { setOtp(e.target.value) }} placeholder="otp" />
-                        <button>Verify OTP</button>
-                    </form>
+                <div style={{ display: "flex", justifyContent: "center", gap: 1 }}>
+                    {
+                        inputArr?.map((input, index) => {
+                            return (
+                                <input
+                                    style={{ width: 30, textAlign: "center", outline: "none" }}
+                                    key={index}
+                                    type='text'
+                                    value={inputArr[index]}
+                                    ref={(el) => { refArr.current[index] = el }}
+                                    onChange={(e) => handleOnChange(e.target.value, index)}
+                                    onKeyDown={(e) => handleOnKeyDown(e, index)}
+                                />
+                            )
+                        })
+                    }
                 </div>
                 {/* form ends */}
+
+
+
+
                 <div className="card_terms">
                     <span>
                         <Link to={"/login"}>Go Back to Login!</Link>

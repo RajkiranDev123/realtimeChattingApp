@@ -56,13 +56,13 @@ function ProtectedRoute({ children }) {
     }
 
     useEffect(() => {
-        if (localStorage.getItem("token")) {
-            getLoggedUserDB()
-            getAllUsersFromDB()
-            getAllChatsFromDB()
-        } else {
-            navigate("/login")
-        }
+        // if (localStorage.getItem("token")) {
+        //     getLoggedUserDB()
+        //     getAllUsersFromDB()
+        //     getAllChatsFromDB()
+        // } else {
+        //     navigate("/login")
+        // }
     }, [])
     // useEffect without a dependency array runs every render 
 
