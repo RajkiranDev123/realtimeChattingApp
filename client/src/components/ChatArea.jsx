@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createNewMessage, getAllMessages } from '../apiCalls/message'
+import { createNewMessage, getAllMessages, deleteSelectedMessage } from '../apiCalls/message'
 import { clearUnreadMessageCountAndMessageReadTrue } from '../apiCalls/chat'
 
 import "./chatarea.css"
@@ -41,13 +41,29 @@ const ChatArea = ({ socket }) => {
 
   //delete msg
 
-  const deleteMsg = () => {
+  const deleteMsg = async () => {
+    let response = null
+    try {
+      dispatch(showLoader())
+      response = await deleteSelectedMessage(selectedMsg)
+      dispatch(hideLoader())
+      if (response?.success) {
+        scrollDown()
+        setSelectedMsg("")
+        getMessagesAll()
 
+        toast.success(response?.message)
+
+      }
+    } catch (error) {
+      dispatch(hideLoader())
+      toast.error(error?.message)
+    }
   }
 
   // send message
   const sendMessage = async (image) => {
-
+    
     let response = null
     try {
       const newMessage = {
@@ -56,7 +72,7 @@ const ChatArea = ({ socket }) => {
         text: message,
         image: image
       }
-      // if (message == "") { return }
+   
       socket.emit("send-message", {//  .emit("receive-message", message) also  .emit("set-message-count", message)
         ...newMessage,
         members: selectedChat?.members?.map(m => m?._id),
@@ -232,7 +248,7 @@ const ChatArea = ({ socket }) => {
               {/* 3rd div starts */}
               <div>
                 {/* text */}
-                {msg?.text && <div className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>}
+                {msg?.text && <div  className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>}
                 {/* image */}
                 <div >{msg?.image && <img src={msg?.image} alt='img' height={120} width={120} />}</div>
 

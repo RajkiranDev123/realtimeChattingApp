@@ -28,7 +28,7 @@ const Header = ({socket}) => {
 
       <div style={{ alignItems: "center" }} className="app-user-profile">
 
-        <div className="logged-user-name">hi, {formatName(user)}</div>
+        <div className="logged-user-name" style={{fontFamily:"arial"}}>hi, {formatName(user)}!</div>
 
         {/* image */}
         {user?.profilePic && <img onClick={() => navigate("/profile")}
