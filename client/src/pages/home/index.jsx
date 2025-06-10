@@ -70,7 +70,7 @@ const index = () => {
           <button 
           style={{padding:2,border:"none",outline:"none",borderRadius:4,cursor:"pointer"}}
            onClick={handleClickOpen}>
-            👥 Contacts
+            👨‍💼💬
           </button>
           <Dialog
             sx={{

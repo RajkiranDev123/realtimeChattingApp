@@ -30,6 +30,7 @@ const index = () => {
 
         dispatch(hideLoader())
         toast.success(response.message)
+        setUser({ email: "", password: "" })
         navigate("/") //go to home
       } else {
         toast.error(response.message)

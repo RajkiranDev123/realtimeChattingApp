@@ -157,7 +157,7 @@ const UserList = ({ searchKey, socket, onlineUser, handleClose }) => {
                     <div className="filter-user-display">
 
                         {/* profile pic */}
-                        {user?.profilePic && <img src={user?.profilePic} style={{ border: onlineUser?.includes(user?._id) ? "2px solid green" : "" }}
+                        {user?.profilePic && <img src={user?.profilePic} style={{ border: onlineUser?.includes(user?._id) ? "3px dashed red" : "" }}
                             alt="Profile Pic" className="user-profile-image" />}
 
                         {/* ///////////////////////////////// or short name  ///////////////////////////////////////////////////////////////////////////// */}

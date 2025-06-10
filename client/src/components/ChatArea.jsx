@@ -29,6 +29,9 @@ const ChatArea = ({ socket }) => {
 
   const [data, setData] = useState(null)
 
+  const [uploadedImage, setUploadedImage] = useState("")
+
+
   const [allMessages, setAllMessages] = useState([])
 
   const [isTyping, setIsTyping] = useState(false)
@@ -62,17 +65,20 @@ const ChatArea = ({ socket }) => {
   }
 
   // send message
-  const sendMessage = async (image) => {
-    
+  const sendMessage = async () => {
+    if (message == "") {
+      toast.error("Message can't be empty!")
+      return
+    }
     let response = null
     try {
       const newMessage = {
         chatId: selectedChat?._id,
         sender: user?._id,
         text: message,
-        image: image
+        image: uploadedImage
       }
-   
+
       socket.emit("send-message", {//  .emit("receive-message", message) also  .emit("set-message-count", message)
         ...newMessage,
         members: selectedChat?.members?.map(m => m?._id),
@@ -88,6 +94,7 @@ const ChatArea = ({ socket }) => {
         toast.success(response.message)
         scrollDown()
         setNewMessage("")
+        setUploadedImage("")
         setShowEmojiPicker(false)
       }
     } catch (error) {
@@ -97,13 +104,15 @@ const ChatArea = ({ socket }) => {
   }
 
   // sendImage
-  const sendImage = async (e) => {
+  const upldImg = async (e) => {
     const file = e.target.files[0]
 
     const reader = new FileReader(file)
     reader.readAsDataURL(file)
     reader.onloadend = async () => {
-      sendMessage(reader.result)
+      setUploadedImage(reader?.result)
+      scrollDown()
+
     }
 
   }
@@ -165,14 +174,17 @@ const ChatArea = ({ socket }) => {
     }
     //dont call getAllmessages api after sending msg instead listen to an event and update the redux : api call reduced!
     socket?.off("receive-message")?.on("receive-message", message => {
+
       const selectedChat = store.getState().userReducer.selectedChat
       if (selectedChat?._id == message?.chatId) {
         //otherwise other selected chat will receive message too
         setAllMessages(prevMsg => [...prevMsg, message]) //update on state
+
       }
 
       ////////////////////////////////////////////////     receiver
       if (selectedChat?._id == message?.chatId && message?.sender !== user?._id) {
+        scrollDown()
         clearUnreadCountAndTrue() //from db
       }
     })
@@ -199,6 +211,7 @@ const ChatArea = ({ socket }) => {
           return { ...msg, read: true }
         })
       })
+
 
     })//message count cleared ends!
 
@@ -248,9 +261,9 @@ const ChatArea = ({ socket }) => {
               {/* 3rd div starts */}
               <div>
                 {/* text */}
-                {msg?.text && <div  className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>}
+                {msg?.text && <div className={isCurrentUserSender ? "send-message" : "received-message"}>{msg?.text}</div>}
                 {/* image */}
-                <div >{msg?.image && <img src={msg?.image} alt='img' height={120} width={120} />}</div>
+                <div >{msg?.image && <img style={{ borderRadius: 3, margin: 1 }} src={msg?.image} alt='img' height={120} width={120} />}</div>
 
                 {/* time and tick */}
                 <div className='message-timestamp' style={isCurrentUserSender ? { float: "right" } : { float: "left" }}>
@@ -303,10 +316,16 @@ const ChatArea = ({ socket }) => {
 
 
         {/* input,image,emoji and send button */}
-        <div className="send-message-div" id='mca' >
-
+        <div className="send-message-div"  >
+          {uploadedImage && <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+            <img style={{ borderRadius: 3, margin: 1 }} width={150} height={150} src={uploadedImage} alt='uploadedImg' />
+            <button onClick={() => setUploadedImage("")}
+              style={{ color: "red", cursor: "pointer", background: "white", outline: "none", border: "none", borderRadius: 2, padding: 4 }}>
+              X</button>
+          </div>
+          }
           {/* input text */}
-          <input value={message} onChange={(e) => {
+          <input style={{ outline: "none" }} value={message} onChange={(e) => {
             setNewMessage(e.target.value)
             socket.emit("user-typing", { //  io.to(data.members[0]).to(data.members[1]).emit("started-typing", data)
               chatId: selectedChat?._id,
@@ -325,7 +344,7 @@ const ChatArea = ({ socket }) => {
           <label for="file">     {/* for="file" ==> id='file' */}
             <i className='fa fa-picture-o send-image-btn'></i>
             {/* visibility : hidden consumes space */}
-            <input type='file' id='file' style={{ display: "none" }} accept='image/jpg,image/png,image/jpeg' onChange={sendImage} />
+            <input type='file' id='file' style={{ display: "none" }} accept='image/jpg,image/png,image/jpeg' onChange={upldImg} />
           </label>
           {/* select image ends */}
 
@@ -335,9 +354,11 @@ const ChatArea = ({ socket }) => {
 
 
           {/* send button */}
-          <button onClick={() => sendMessage("")} className="fa fa-paper-plane send-message-btn" aria-hidden="true"></button>
+          <button onClick={() => sendMessage()} className="fa fa-paper-plane send-message-btn" aria-hidden="true"></button>
           {/* send button ends */}
         </div>
+
+        <div id='mca' style={{ color: "#F9F6EE" }}>.</div>
 
       </div>}
 
