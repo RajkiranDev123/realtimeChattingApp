@@ -9,7 +9,7 @@ import moment from "moment"
 import { formatName } from "../utils/formatName.js"
 import store from '../redux/store.js'
 
-const UserList = ({ searchKey, socket, onlineUser,handleClose }) => {
+const UserList = ({ searchKey, socket, onlineUser, handleClose }) => {
     //allChats: chats that contains current user in members
     const { allUsers, allChats, user: currentUser, selectedChat } = useSelector(state => state.userReducer)
     const dispatch = useDispatch()
@@ -22,10 +22,11 @@ const UserList = ({ searchKey, socket, onlineUser,handleClose }) => {
         )
         if (chat) {
             dispatch(setSelectedChat(chat))
-            handleClose()
+            handleClose()//model will close
         }
     }
 
+    //for online detection like colors etc
     const isSelectedChat = (selectedUser) => {
         //check if selectedUser contains in members of selected chat
         if (selectedChat) {
@@ -48,6 +49,8 @@ const UserList = ({ searchKey, socket, onlineUser,handleClose }) => {
     //for all users
     const getUnreadMessageCount = (userId) => {
         const chat = allChats?.find(chat => chat?.members?.map(m => m?._id).includes(userId))
+        /////////////////////////////////////////////////////////// if sender sended last msg then why count should be displayed on sender side?
+        //sender show all msgs and sended text
         if (chat && chat?.unreadMessageCount && chat?.lastMessage?.sender !== currentUser?._id) {
             return chat?.unreadMessageCount
         } else {
@@ -69,14 +72,15 @@ const UserList = ({ searchKey, socket, onlineUser,handleClose }) => {
         let response = null
         try {
             dispatch(showLoader())
-            response = await createNewChat([searchedUserId, currentUser._id])
+            response = await createNewChat([searchedUserId, currentUser?._id])
             dispatch(hideLoader())
-            if (response.success) {
+            if (response?.success) {
                 toast.success(response.message)
                 const newChat = response.data
                 const updatedChat = [...allChats, newChat]// add new chat not replace
                 dispatch(setAllChats(updatedChat))
-                dispatch(setSelectedChat(newChat))
+                dispatch(setSelectedChat(newChat))// now chat area will open
+                handleClose()
                 //Components connected to Redux via useSelector will only re-render when
                 //the relevant slice of state they're subscribed to changes
             }
@@ -103,9 +107,9 @@ const UserList = ({ searchKey, socket, onlineUser,handleClose }) => {
     }
 
     useEffect(() => {
-        //update unreadMessageCount for other users/friends
+        //get notified..if other user is selected but reciever is sending msg to you
         // socket.on("receive-message", message => {
-      socket?.off("set-message-count").socket?.on("set-message-count", message => {
+        socket?.off("set-message-count").socket?.on("set-message-count", message => {
 
             const selectedChat = store.getState().userReducer.selectedChat
             let allChats = store.getState().userReducer.allChats
@@ -142,7 +146,7 @@ const UserList = ({ searchKey, socket, onlineUser,handleClose }) => {
 
     return (
         getData().map(obj => {
-            let user = obj
+            let user = obj//put non-logged user from chats from members :[{logged},{non-logged}]
             if (obj.members) {//take user which is not a logged user from allChats 
                 user = obj?.members?.find(mem => mem?._id !== currentUser?._id)
             }
@@ -156,12 +160,15 @@ const UserList = ({ searchKey, socket, onlineUser,handleClose }) => {
                         {user?.profilePic && <img src={user?.profilePic} style={{ border: onlineUser?.includes(user?._id) ? "2px solid green" : "" }}
                             alt="Profile Pic" className="user-profile-image" />}
 
-                        {/*or short name */}
+                        {/* ///////////////////////////////// or short name  ///////////////////////////////////////////////////////////////////////////// */}
+
+                        {/*or short name : show when user?.profile pic is false/"" */}
                         {!user?.profilePic &&
                             <div className={isSelectedChat(user) ? "user-selected-avatar" : "user-default-avatar"}
                                 style={{ border: onlineUser?.includes(user?._id) ? "3px solid green" : "" }}>
                                 {user?.firstName[0]?.toUpperCase() + " " + user?.lastName[0]?.toUpperCase()}
                             </div>}
+
 
                         {/* full name and (lastMessage or email) */}
                         <div className="filter-user-details">

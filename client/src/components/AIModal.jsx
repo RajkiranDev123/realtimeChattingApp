@@ -82,10 +82,10 @@ export default function AIModal() {
             </div>
 
             <input placeholder='type your question...' style={{ height: 30, width: "95%", borderRadius: 3, padding: 2, outline: "none", border: "none" }} value={question} type='text' onChange={(e) => setQuestion(e.target.value)} />
-            <div style={{ display: "flex", gap: 3, margin: 2 }}>
+            <div style={{ display: "flex", gap: 3, justifyContent:"center",marginTop:3 }}>
               <button style={{ border: "none", padding: 2, cursor: "pointer", background: "red", color: "white", borderTopRightRadius: 7 }} onClick={ask}>Ask</button>
-              <button style={{ border: "none", padding: 2, cursor: "pointer", background: "blue", color: "white", borderTopLeftRadius: 7 }} onClick={() => setQuestion("")}>Clear Question</button>
-              <button style={{ border: "none", padding: 2, cursor: "pointer", background: "blue", color: "white", borderRadius: 2 }} onClick={() => setAns("")}>Clear Msg</button>
+              <button style={{ border: "none", padding: 2, cursor: "pointer", background: "grey", color: "white", borderTopLeftRadius: 7 }} onClick={() => setQuestion("")}>Clear Question</button>
+              <button style={{ border: "none", padding: 2, cursor: "pointer", background: "green", color: "white", borderRadius: 2 }} onClick={() => setAns("")}>Clear Msg</button>
             </div>
 
 
