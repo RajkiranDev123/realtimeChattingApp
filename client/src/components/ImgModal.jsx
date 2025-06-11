@@ -26,7 +26,7 @@ export default function ImgModal() {
     //ai
     const [wait, setWait] = React.useState(false);
 
-    const [question, setQuestion] = React.useState("");
+
     const [ans, setAns] = React.useState("");
 
 
@@ -51,7 +51,7 @@ export default function ImgModal() {
 
 
     const handleOpen = () => setOpen(true);
-    const handleClose = () => { setOpen(false); SpeechRecognition.stopListening(); setTextToCopy(""); resetTranscript();setAns("") };
+    const handleClose = () => { setOpen(false); SpeechRecognition.stopListening(); setTextToCopy(""); resetTranscript(); setAns("") };
 
     // call api
     function ask(trans) {
@@ -75,10 +75,10 @@ export default function ImgModal() {
         })
         res.then(res => res?.json())
             .then(data => {
-              
+
                 setAns(data?.choices[0]?.message?.content);
                 // setWait(false)
-                // setQuestion("")
+
                 // console.log("aaws",data?.choices[0]?.message?.content)
             })
             .catch(e => {
@@ -116,12 +116,12 @@ export default function ImgModal() {
                             {textToCopy}
                         </div>
 
-                        {ans &&<textarea  style={{width:"98%",margin: 2,height:40,outline:"none",border:"none",padding:2}} value={ans}></textarea>}
-                 
-                        <div onClick={()=> transcript && ask(transcript)}
+                        {ans && <textarea style={{ width: "98%", margin: 2, height: 40, outline: "none", border: "none", padding: 2 }} value={ans}></textarea>}
 
-    style={{color:"grey", padding: 3, borderRadius: 3, background: "white", fontFamily: "monospace", cursor:transcript?"pointer":"not-allowed",margin:3,textAlign:"center" }}>
-                         Summarize in points using AI
+                        <div onClick={() => transcript && ask(transcript)}
+
+                            style={{ color: "grey", padding: 3, borderRadius: 3, background: "white", fontFamily: "monospace", cursor: transcript ? "pointer" : "not-allowed", margin: 3, textAlign: "center" }}>
+                            Summarize in points using AI
                         </div>
                         <div style={{ textAlign: "center" }}>
 
@@ -130,7 +130,7 @@ export default function ImgModal() {
                             </button>
                             <button onClick={startListening} style={{ padding: 2, borderRadius: 3, border: "none", cursor: "pointer", marginRight: 4 }} >Start Listening</button>
                             <button onClick={SpeechRecognition.stopListening} style={{ padding: 2, borderRadius: 3, border: "none", cursor: "pointer", marginRight: 4, background: "red", color: "white" }} >Stop Listening</button>
-                            <button onClick={() => { resetTranscript(); setTextToCopy("");setAns("") }}
+                            <button onClick={() => { resetTranscript(); setTextToCopy(""); setAns("") }}
                                 style={{ padding: 2, borderRadius: 3, border: "none", cursor: "pointer", marginRight: 4, color: "wheat", background: "green" }}>Clear</button>
 
 
