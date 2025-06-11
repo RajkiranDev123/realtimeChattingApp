@@ -27,10 +27,10 @@ const index = () => {
     async function uploadProfilePicture() {
 
         try {
-            dispatch(showLoader())
+            // dispatch(showLoader())
             console.log("image upload from profile base64 ==>",image)
             const response = await uploadProfilePic(image)
-            dispatch(hideLoader())
+            // dispatch(hideLoader())
             if (response?.success) {
                 toast.success(response.message)
                 dispatch(setUser(response.data))
@@ -39,7 +39,7 @@ const index = () => {
             }
         } catch (error) {
             toast.error(response?.message)
-            dispatch(hideLoader())
+            // dispatch(hideLoader())
         }
  }
 

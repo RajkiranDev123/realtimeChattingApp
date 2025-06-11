@@ -51,9 +51,11 @@ const ChatArea = ({ socket }) => {
       response = await deleteSelectedMessage(selectedMsg)
       dispatch(hideLoader())
       if (response?.success) {
+        // setAllMessages([])
+        getMessagesAll()
+
         scrollDown()
         setSelectedMsg("")
-        getMessagesAll()
 
         toast.success(response?.message)
 
@@ -176,13 +178,14 @@ const ChatArea = ({ socket }) => {
     socket?.off("receive-message")?.on("receive-message", message => {
 
       const selectedChat = store.getState().userReducer.selectedChat
-      if (selectedChat?._id == message?.chatId) {
-        //otherwise other selected chat will receive message too
-        setAllMessages(prevMsg => [...prevMsg, message]) //update on state
+      if (selectedChat?._id == message?.chatId) {//otherwise other selected chat will receive message too
+
+       // setAllMessages(prevMsg => [...prevMsg, message]) //update on state! but you wont get _id of new msg
+       getMessagesAll()
 
       }
 
-      ////////////////////////////////////////////////     receiver
+      ////////////////////////////////////////////////   when receiver is online
       if (selectedChat?._id == message?.chatId && message?.sender !== user?._id) {
         scrollDown()
         clearUnreadCountAndTrue() //from db
@@ -197,13 +200,16 @@ const ChatArea = ({ socket }) => {
       const allChats = store.getState().userReducer.allChats
 
       if (selectedChat?._id == data?.chatId) {
+
         const updatedChats = allChats.map(chat => {
           if (chat?._id == data?.chatId) {
             return { ...chat, unreadMessageCount: 0 }
           }
           return chat
         })
+
         dispatch(setAllChats(updatedChats))//allChats will render on UserList Component too!
+
       }
       //update read to true in all Messages
       setAllMessages(prevMsgs => {
@@ -251,7 +257,7 @@ const ChatArea = ({ socket }) => {
 
 
         {/* chat area */}
-        <div className="main-chat-area"  >
+        <div className="main-chat-area" style={{background:"white"}} >
           {/* chatId:chat sender:user text read image */}
           {allMessages?.map(msg => {
             const isCurrentUserSender = msg?.sender === user?._id //user is from looged guy
@@ -281,7 +287,26 @@ const ChatArea = ({ socket }) => {
           {/* typing indicator */}
           <div>{isTyping && selectedChat?.members?.map(m => m?._id).includes(data?.sender) && <i style={{ color: "grey", fontSize: 10 }}>typing...</i>}</div>
 
-          {/* ai models */}
+         
+
+        </div>
+        {/* chat area ends */}
+
+
+
+        {/* emoji picker starts */}
+        <div>
+          {showEmojiPicker && <EmojiPicker style={{ height: 350, width: 300 }} onEmojiClick={(e) => setNewMessage(message + e.emoji)}></EmojiPicker>}
+        </div>
+        {/* emoji picker ends */}
+
+
+
+
+        {/* input,image,emoji and send button */}
+        <div className="send-message-div"  >
+
+         {/* ai models */}
           <div style={{ display: "flex", gap: 2 }}>
             {/* talk */}
             <div>
@@ -300,23 +325,6 @@ const ChatArea = ({ socket }) => {
             </div>}
           </div>
           {/* ai ends */}
-
-        </div>
-        {/* chat area ends */}
-
-
-
-        {/* emoji picker starts */}
-        <div>
-          {showEmojiPicker && <EmojiPicker style={{ height: 350, width: 300 }} onEmojiClick={(e) => setNewMessage(message + e.emoji)}></EmojiPicker>}
-        </div>
-        {/* emoji picker ends */}
-
-
-
-
-        {/* input,image,emoji and send button */}
-        <div className="send-message-div"  >
           {uploadedImage && <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
             <img style={{ borderRadius: 3, margin: 1 }} width={150} height={150} src={uploadedImage} alt='uploadedImg' />
             <button onClick={() => setUploadedImage("")}

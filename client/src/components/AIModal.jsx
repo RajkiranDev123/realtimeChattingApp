@@ -11,7 +11,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   height: 400,
-  bgcolor: '#F0EAD6',
+  bgcolor: '#C0C0C0',
 
   boxShadow: 24,
   p: 1,
@@ -57,6 +57,7 @@ export default function AIModal() {
         console.log("aa",data)
         setAns(data?.choices[0]?.message?.content);
         setWait(false)
+        setQuestion("")
       })
       .catch(e => { setAns("limit exceeded!"); setWait(false) });
   }
@@ -75,13 +76,13 @@ export default function AIModal() {
           <p onClick={() => handleClose()} style={{ color: "red", fontWeight: "bold", display: "flex", justifyContent: "flex-end", cursor: "pointer" }}>x</p>
 
           <div>
-            <div style={{ overflowY: "scroll", height: 290, color: "grey", fontStyle: "italic" }}>
+            <div style={{ overflowY: "scroll", height: 290, color: "grey", fontFamily: "monospace",background:"white",padding:2,borderRadius:3 }}>
               {wait && <p style={{ color: "grey" }}>Plz Wait...</p>}
               {ans}
 
             </div>
 
-            <input placeholder='type your question...' style={{ height: 30, width: "95%", borderRadius: 3, padding: 2, outline: "none", border: "none" }} value={question} type='text' onChange={(e) => setQuestion(e.target.value)} />
+            <input placeholder='type your question...' style={{ height: 30, width: "95%", borderRadius: 3, padding: 2, outline: "none", border: "none",margin:1 }} value={question} type='text' onChange={(e) => setQuestion(e.target.value)} />
             <div style={{ display: "flex", gap: 3, justifyContent:"center",marginTop:3 }}>
               <button style={{ border: "none", padding: 2, cursor: "pointer", background: "red", color: "white", borderTopRightRadius: 7 }} onClick={ask}>Ask</button>
               <button style={{ border: "none", padding: 2, cursor: "pointer", background: "grey", color: "white", borderTopLeftRadius: 7 }} onClick={() => setQuestion("")}>Clear Question</button>

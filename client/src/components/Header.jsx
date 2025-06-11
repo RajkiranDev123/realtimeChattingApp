@@ -21,7 +21,7 @@ const Header = ({socket}) => {
 
     <div className="app-header">
 
-      <div className="app-logo">
+      <div className="app-logo" style={{textShadow: "white 1px 0 10px"}}>
         <i className="fa fa-comments" aria-hidden="true"></i>
         Fast Chat
       </div>
