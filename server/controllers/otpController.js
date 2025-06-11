@@ -11,13 +11,13 @@ export const getOtp = async (req, res) => {
         port: 465,
         secure: true, // use SSL
         auth: {
-            user: 'rajtech645@gmail.com',
+            user: process.env.otp_sender,
             pass: process.env.otp_pass,
         }
     });
     let otp = Math.floor(1000 + Math.random() * 9000)
     const mailOptions = {
-        from: 'rajtech645@gmail.com',
+        from: process.env.otp_sender,
         to: to,
         subject: 'Otp for changing password (Chat App)',
         text: otp.toString()
