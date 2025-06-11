@@ -79,10 +79,10 @@ export default function ImgModal() {
                 setAns(data?.choices[0]?.message?.content);
                 // setWait(false)
                 // setQuestion("")
-                console.log("aaws",data?.choices[0]?.message?.content)
+                // console.log("aaws",data?.choices[0]?.message?.content)
             })
             .catch(e => {
-                // setAns("limit exceeded!");
+                setAns("limit exceeded!");
                 // setWait(false)
             });
     }
