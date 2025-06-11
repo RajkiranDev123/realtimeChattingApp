@@ -38,7 +38,7 @@ export default function AIModal() {
     let res = fetch("https://api.sarvam.ai/v1/chat/completions", {
       method: "POST",
       headers: {
-        "api-subscription-key": "b86bcbaa-1f7f-4984-98bf-a35576df14c9",
+        "api-subscription-key": import.meta.env.VITE_API_KEY,
 
         "Content-Type": "application/json"
       },
@@ -54,12 +54,15 @@ export default function AIModal() {
     })
     res.then(res => res?.json())
       .then(data => {
-        console.log("aa",data)
+        console.log("aa", data)
         setAns(data?.choices[0]?.message?.content);
         setWait(false)
         setQuestion("")
       })
-      .catch(e => { setAns("limit exceeded!"); setWait(false) });
+      .catch(e => {
+        setAns("limit exceeded!");
+        setWait(false)
+      });
   }
 
 
@@ -76,14 +79,14 @@ export default function AIModal() {
           <p onClick={() => handleClose()} style={{ color: "red", fontWeight: "bold", display: "flex", justifyContent: "flex-end", cursor: "pointer" }}>x</p>
 
           <div>
-            <div style={{ overflowY: "scroll", height: 290, color: "grey", fontFamily: "monospace",background:"white",padding:2,borderRadius:3 }}>
+            <div style={{ overflowY: "scroll", height: 290, color: "grey", fontFamily: "monospace", background: "white", padding: 2, borderRadius: 3 }}>
               {wait && <p style={{ color: "grey" }}>Plz Wait...</p>}
               {ans}
 
             </div>
 
-            <input placeholder='type your question...' style={{ height: 30, width: "95%", borderRadius: 3, padding: 2, outline: "none", border: "none",margin:1 }} value={question} type='text' onChange={(e) => setQuestion(e.target.value)} />
-            <div style={{ display: "flex", gap: 3, justifyContent:"center",marginTop:3 }}>
+            <input placeholder='type your question...' style={{ height: 30, width: "95%", borderRadius: 3, padding: 2, outline: "none", border: "none", margin: 1 }} value={question} type='text' onChange={(e) => setQuestion(e.target.value)} />
+            <div style={{ display: "flex", gap: 3, justifyContent: "center", marginTop: 3 }}>
               <button style={{ border: "none", padding: 2, cursor: "pointer", background: "red", color: "white", borderTopRightRadius: 7 }} onClick={ask}>Ask</button>
               <button style={{ border: "none", padding: 2, cursor: "pointer", background: "grey", color: "white", borderTopLeftRadius: 7 }} onClick={() => setQuestion("")}>Clear Question</button>
               <button style={{ border: "none", padding: 2, cursor: "pointer", background: "green", color: "white", borderRadius: 2 }} onClick={() => setAns("")}>Clear Msg</button>
