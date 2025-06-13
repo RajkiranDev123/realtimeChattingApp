@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 dotenv.config({ path: "./.env" })
 import mongoose from "mongoose";
 
-// console.log("check DB_CONN ==>", process.env.DB_CONN)
+console.log("check DB_CONN ==>", process.env.DB_CONN)
 mongoose.connect(process.env.DB_CONN)
 
 //connection state

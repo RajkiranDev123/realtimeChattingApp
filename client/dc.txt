@@ -1,0 +1,40 @@
+
+
+before build :
+
+FROM node:20
+WORKDIR /app
+COPY ./package*.json ./
+RUN npm install --force
+COPY . .
+
+
+
+after build :
+
+//runs when container is run
+CMD ["npm","run","dev"] 
+
+commands :
+
+// -t for image name and . for Dockerfile location
+docker build -t client-image .
+
+//
+docker image ls
+
+//
+docker run --name client-container --rm client-image
+
+//
+docker stop client-container
+
+//
+docker run --rm --name client-container -d -p 5173:5173 client-image 
+
+// fix issue :
+"scripts": "dev": "vite --host",
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+docker exec -it client-container bash
