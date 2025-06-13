@@ -116,7 +116,7 @@ export default function ImgModal() {
                             {textToCopy}
                         </div>
 
-                        {ans && <textarea style={{ width: "98%", margin: 2, height: 40, outline: "none", border: "none", padding: 2 }} value={ans}></textarea>}
+                        {ans && <div style={{height:"50px", width: "98%",background:"white",color:"grey", margin: 2, overflowY: "scroll", outline: "none", border: "none", padding: 2,borderRadius:3 }} value={ans}>{ans}</div>}
 
                         <div onClick={() => transcript && ask(transcript)}
 
