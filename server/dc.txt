@@ -15,13 +15,13 @@ Dockerfile :
     COPY ./package*.json ./
     RUN npm install --force
     COPY . .
-
     EXPOSE 3001
-
     CMD ["npm","run","dev"]
 
 //build
 docker build -t server-image .
+
+// EXPOSE 3001 for dev purpose
 
 //run
 docker run --rm -d -p 3001:3001 --env-file ./.env --name server-container server-image
