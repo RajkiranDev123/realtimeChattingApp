@@ -1,29 +1,30 @@
-.dockerignore
 
-node_modules
-.env
-.git
-dist
-.aws
-.coverage
-.DS_Store
+.dockerignore :
+    node_modules
+    .env
+    .git
+    dist
+    .aws
+    .coverage
+    .DS_Store
 
 
-Dockerfile
-FROM node:20
-WORKDIR /app
-COPY ./package*.json ./
-RUN npm install --force
-COPY . .
+Dockerfile :
+    FROM node:20
+    WORKDIR /app
+    COPY ./package*.json ./
+    RUN npm install --force
+    COPY . .
 
-EXPOSE 3001
+    EXPOSE 3001
 
-CMD ["npm","run","dev"]
+    CMD ["npm","run","dev"]
 
-build
+//build
 docker build -t server-image .
 
-run
+//run
 docker run --rm -d -p 3001:3001 --env-file ./.env --name server-container server-image
 
+// execute something on running container
 docker exec -it server-container bash

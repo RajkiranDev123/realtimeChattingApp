@@ -17,16 +17,19 @@ CMD ["npm","run","dev"]
 
 commands :
 
-// -t for image name and . for Dockerfile location
+// for build
+//-t for image name and . for Dockerfile location
+
 docker build -t client-image .
 
-//
-docker image ls
+// get all images
+docker image ls or docker images
 
-//
+// run 
 docker run --name client-container --rm client-image
+//not working in localhost
 
-//
+// stop the container
 docker stop client-container
 
 //
@@ -38,3 +41,5 @@ docker run --rm --name client-container -d -p 5173:5173 client-image
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 docker exec -it client-container bash
+
+docker logs client-container
