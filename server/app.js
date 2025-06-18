@@ -11,7 +11,7 @@ app.use(express.json({ limit: "50mb" }))// It parses the JSON payload and attach
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.FRONT_END_URL,
+        origin: "*",
         methods: ["GET", "POST"],
         credentials: true
     }
