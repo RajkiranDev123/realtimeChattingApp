@@ -12,6 +12,8 @@ const index = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [user, setUser] = useState({ email: "", password: "" }) // setUser({ ...user, password: e.target.value })
+  const [hide, setHide] = useState(true) // setUser({ ...user, password: e.target.value })
+
 
   const submit = async (e) => {
     e.preventDefault()
@@ -55,7 +57,7 @@ const index = () => {
         </div>
 
         <div className="card_title">
-          <h1 style={{color:"#36454F"}}>Login Here 🔑</h1>
+          <h1 style={{ color: "#36454F" }}>Login Here 🔑</h1>
         </div>
 
         {/* form starts */}
@@ -75,9 +77,12 @@ const index = () => {
                 <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
               </CopyToClipboard>
             </p>
-
-            <input type="password" value={user.password}
-              onChange={(e) => setUser({ ...user, password: e.target.value })} placeholder="Password" />
+            <span style={{ position: "relative" }}>
+              <input type={hide?"password":"text"} value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })} placeholder="Password" />
+              <span style={{ position: "absolute", right: 20, top: 3 }}>
+                {hide?<span style={{cursor:"pointer"}} onClick={()=>setHide(false)}>👁️‍🗨️</span>: <span onClick={()=>setHide(true)} style={{cursor:"pointer"}}>😵</span>}</span>
+            </span>
 
             <button>Login</button>
 
@@ -86,13 +91,13 @@ const index = () => {
         {/* form ends */}
 
         <div className="card_terms">
-          <span style={{color:"#71797E"}}>Don't have an account yet?
+          <span style={{ color: "#71797E" }}>Don't have an account yet?
             <Link to={"/signup"}>Signup Here</Link>
           </span>
         </div>
-        
-        <p style={{textAlign:"center"}}>
-          <Link style={{color:"#8A9A5B"}} to={"/email"}>Forgot password?</Link>
+
+        <p style={{ textAlign: "center" }}>
+          <Link style={{ color: "#8A9A5B" }} to={"/email"}>Forgot password?</Link>
         </p>
 
       </div>
