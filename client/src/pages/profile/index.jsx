@@ -51,8 +51,8 @@ const index = () => {
 
     return (
         <div className="profile-page-container">
-            <div className="profile-pic-container">
-                {image && <img src={image}
+            <div className="profile-pic-container" style={{border:"0px solid red"}}>
+                {image && <img src={image} style={{width:100,height:110}}
                     alt="Profile Pic"
                     className="user-profile-pic-upload"
                 />}
@@ -75,8 +75,8 @@ const index = () => {
                     <b>Account Created: </b>{user?.createdAt?.split("T")[0]}
                 </div>
                 <div className="select-profile-pic-container">
-                    <input type="file" onChange={onFileSelect} />
-                   { image&&<button style={{background:"blue",border:"none",borderRadius:3,padding:3,color:"white",cursor:"pointer"}} 
+                    <input style={{width:100}} type="file" onChange={onFileSelect} />
+                   { image&&<button style={{background:"blue",border:"none",borderRadius:3,padding:3,color:"white",cursor:"pointer",margin:1}} 
                     onClick={uploadProfilePicture}>Upload </button>}
                 </div>
             </div>
