@@ -71,7 +71,7 @@ const index = () => {
             <input type="email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} placeholder="Email" />
 
             <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>Test Password :
-              <CopyToClipboard text="123">
+              <CopyToClipboard text="12345678@A">
                 <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
               </CopyToClipboard>
             </p>

@@ -40,6 +40,8 @@ const index = () => {
 
                 dispatch(hideLoader())
                 toast.success(response.message)
+                setConfirmNewPassword("")
+                setNewPassword("")
                 // navigate("/")
             } else {
                 toast.error(response.message)
@@ -72,9 +74,9 @@ const index = () => {
 
 
 
-                        <input type="text"
+                        <input type="text" value={newPassword}
                             onChange={(e) => { setNewPassword(e.target.value) }} placeholder="New Password" />
-                        <input type="text"
+                        <input type="text" value={confirmNewPassword}
                             onChange={(e) => { setConfirmNewPassword(e.target.value) }} placeholder="Confirm New Password" />
                         <button>Change Password</button>
 
