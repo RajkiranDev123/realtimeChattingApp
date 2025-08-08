@@ -5,6 +5,8 @@ import { toast } from "react-hot-toast"
 import { useDispatch } from "react-redux"
 import { hideLoader, showLoader } from '../../redux/loaderSlice';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { FaEye } from "react-icons/fa";
+import { LuEyeOff } from "react-icons/lu";
 
 /////////////////// login /////////////////////////
 
@@ -53,11 +55,11 @@ const index = () => {
       <div className="card">
 
         <div>
-          <p style={{ fontWeight: "bold", textAlign: "center", color: "#818589" }}>Chat Fast 📲!</p>
+          <p style={{ fontWeight: "bold", textAlign: "center", color: "#818589" }}>Chat Fast 📲</p>
         </div>
 
         <div className="card_title">
-          <h1 style={{ color: "#36454F" }}>Login Here 🔑</h1>
+          <h1 style={{ color: "#36454F" }}>Login Here...</h1>
         </div>
 
         {/* form starts */}
@@ -81,7 +83,7 @@ const index = () => {
               <input type={hide?"password":"text"} value={user.password}
                 onChange={(e) => setUser({ ...user, password: e.target.value })} placeholder="Password" />
               <span style={{ position: "absolute", right: 20, top: 3 }}>
-                {hide?<span style={{cursor:"pointer"}} onClick={()=>setHide(false)}>👁️‍🗨️</span>: <span onClick={()=>setHide(true)} style={{cursor:"pointer"}}>😵</span>}</span>
+                {hide?<span style={{cursor:"pointer"}} onClick={()=>setHide(false)}><LuEyeOff/></span>: <span onClick={()=>setHide(true)} style={{cursor:"pointer"}}><FaEye/></span>}</span>
             </span>
 
             <button>Login</button>

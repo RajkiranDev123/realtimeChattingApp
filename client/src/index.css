@@ -9,7 +9,7 @@
 
 /*************CSS STYLES FOR LOGIN & SIGNUP**************/
 .container-back-img{
-  background-image: url('./bgchat.jpg');
+ background-image: linear-gradient(to bottom, #30cfd0 0%, #330867 100%);
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
@@ -40,7 +40,7 @@
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
   width: 480px;
 
-  background-color: #cbcacf;
+  background-color: #fff;
   padding: 50px 35px;
   opacity: 0.8;
 }
