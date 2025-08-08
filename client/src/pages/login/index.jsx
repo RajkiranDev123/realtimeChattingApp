@@ -52,7 +52,7 @@ const index = () => {
       <div className="container-back-color"></div>
 
       {/* card */}
-      <div className="card">
+      <div  className="card">
 
         <div>
           <p style={{ fontWeight: "bold", textAlign: "center", color: "#818589" }}>Chat Fast 📲</p>
@@ -68,7 +68,7 @@ const index = () => {
 
             <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>Test Email :
               <CopyToClipboard text="rajtech645@gmail.com">
-                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
+                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy!</span>
               </CopyToClipboard>
             </p>
 
@@ -76,7 +76,7 @@ const index = () => {
 
             <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>Test Password :
               <CopyToClipboard text="12345678@A">
-                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
+                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy!</span>
               </CopyToClipboard>
             </p>
             <span style={{ position: "relative" }}>

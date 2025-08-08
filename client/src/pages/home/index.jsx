@@ -6,7 +6,7 @@ import ChatArea from "../../components/ChatArea.jsx"
 import { useSelector } from 'react-redux'
 import io from "socket.io-client"
 
-
+import { FaUsers } from "react-icons/fa";
 //
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -70,7 +70,7 @@ const index = () => {
           <button 
           style={{padding:2,border:"none",outline:"none",borderRadius:4,cursor:"pointer"}}
            onClick={handleClickOpen}>
-            👨‍💼💬
+            <FaUsers color='green' size={32}/> 
           </button>
           <Dialog
             sx={{
